@@ -1,0 +1,20 @@
+.App-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #D4D4D4;
+    padding: 0 50px;
+}
+
+.App-header-group {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: center;
+}
+
+.App-header-group input {
+    width: 336px;
+    height: 30px;
+    border-radius: 150px;
+}

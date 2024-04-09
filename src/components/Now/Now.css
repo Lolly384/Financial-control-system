@@ -1,0 +1,12 @@
+.App-main-contents-group-date h1,p{
+    padding: 0px;
+    margin: 0px;
+  }
+  .App-main-contents-group{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 10px;
+    align-items: center;
+  }
+  

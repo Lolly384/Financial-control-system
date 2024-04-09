@@ -1,0 +1,9 @@
+button{
+    width: 100%;
+    height: 35px;
+
+}
+.active{
+    background-color: blue;
+    color: #fff;
+}
