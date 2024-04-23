@@ -9,24 +9,35 @@ body {
 
 }
 
-.App-main{
-  margin-top: 5px;
+
+.pagination {
+  display: inline-block;
   display: flex;
-  flex-direction: row;
-  gap: 5px;
+  margin-top: 10px;
+  /* Примерный отступ сверху */
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  /* Предотвращение выделения текста */
 }
-.App-main-menu{
-  padding: 10px 20px;
-  background-color: #D4D4D4;
-  width: 200px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+
+.pagination li {
+  display: inline-block;
+  margin-right: 5px;
+  /* Примерный отступ между элементами */
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  background-color: #fff;
 }
-.App-main-contents{
-  background-color: #D4D4D4;
-  height: auto;
-  width: 100%;
-  padding-left: 20px;
+
+.pagination li.active {
+  background-color: #007bff;
+  /* Цвет активной страницы */
+  color: #fff;
+}
+
+.pagination li:hover {
+  background-color: #f0f0f0;
+  /* Цвет при наведении */
 }

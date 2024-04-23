@@ -1,0 +1,11 @@
+.sectionGraphic{
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    border-radius: 15px;
+    width: auto;
+    height: 200px;
+    padding: 10px;
+    background-color: #fff;
+    
+}

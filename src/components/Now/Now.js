@@ -20,10 +20,10 @@ export default function Now({ contentType }) {
         <div className='App-main-contents-group'>
             <div className='App-main-contents-group-date'>
                 <h1><strong>{contentType}</strong></h1>
-                <p>Today {date}</p>
+                <p>Сегодня {date}</p>
             </div>
             <div className='App-main-contents-group-time'>
-                <p>{time}</p>
+                <p>Время: {time}</p>
             </div>
         </div>
     )

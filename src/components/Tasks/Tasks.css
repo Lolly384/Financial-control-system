@@ -1,0 +1,14 @@
+
+.tasks {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tasks-butGroup{
+    width: 200px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}

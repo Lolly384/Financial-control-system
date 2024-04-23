@@ -1,0 +1,36 @@
+.transactions {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.transactions-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.transactions-table th,
+.transactions-table td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+.transactions-table th {
+    background-color: #f2f2f2;
+}
+
+.transactions-butGroup {
+    width: 200px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.transactions-button {
+    display: flex;
+    flex-direction: column;
+}
+
+
