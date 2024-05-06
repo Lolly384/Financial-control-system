@@ -3,6 +3,11 @@ import './Transactions.css';
 import Button from '../Button/Button';
 import ReactPaginate from 'react-paginate';
 
+
+
+
+
+
 export default function Transactions() {
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 10;
