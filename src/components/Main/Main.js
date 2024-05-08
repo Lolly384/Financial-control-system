@@ -5,7 +5,7 @@ import SectionGraphic from '../SectionGraphic/SectionGraphic'
 import Transactions from '../Transactions/Transactions'
 import Tasks from '../Tasks/Tasks'
 import Now from '../Now/Now'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 export default function Main() {
 
     const [contentType, setContentType] = useState('Обзор');
@@ -15,6 +15,16 @@ export default function Main() {
         console.log("button cliked", type)
         setContentType(type)
     }
+
+    const testRequest = async () => {
+        const response = await fetch("api/test")
+        console.log(response.json())
+    }
+
+    useEffect(() => {
+        testRequest()
+    }, [])
+
 
     return (
         <main className='App-main'>
