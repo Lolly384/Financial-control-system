@@ -17,7 +17,7 @@ export default function Main() {
     }
 
     const testRequest = async () => {
-        const response = await fetch("api/test")
+        const response = await fetch("/api/test")
         console.log(response.json())
     }
 
