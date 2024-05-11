@@ -15,7 +15,7 @@ app.use('/',express.static(path.join(__dirname, '../dist/spa')));
 app.use('/api', router);
 
 
-server.listen(8080, async () => {
+server.listen(3001, async () => {
   DB.connect();
-  console.log('We are live on ' + 8080);
+  console.log('We are live on ' + 3001);
 })

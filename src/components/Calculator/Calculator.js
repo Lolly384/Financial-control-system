@@ -1,7 +1,7 @@
 
 export default function Calculator(){
     return(
-        <section>
+        <section className="calculator">
             
         </section>
     )

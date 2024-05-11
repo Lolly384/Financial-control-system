@@ -6,6 +6,8 @@ import Transactions from '../Transactions/Transactions'
 import Tasks from '../Tasks/Tasks'
 import Now from '../Now/Now'
 import { useState, useEffect } from 'react'
+
+
 export default function Main() {
 
     const [contentType, setContentType] = useState('Обзор');
@@ -16,22 +18,28 @@ export default function Main() {
         setContentType(type)
     }
 
-    const testRequest = async () => {
-        const response = await fetch("/api/test")
-        console.log(response.json())
-    }
+    // main.js
+    // const testRequest = async () => {
+    //     try {
+    //         const response = await fetch("/api/getTransactions");
+    //         const data = await response.json(); // Ждем разрешения промиса
+    //         console.log(data); // Выводим данные, а не промис
+    //     } catch (error) {
+    //         console.error("Ошибка при выполнении запроса:", error);
+    //     }
+    // };
 
-    useEffect(() => {
-        testRequest()
-    }, [])
+    // useEffect(() => {
+    //     testRequest();
+    // }, []);
 
 
     return (
         <main className='App-main'>
             <section className='App-main-menu'>
                 {
-                    menuArr.map((elem) => (
-                        <Button isActive={contentType === elem} onClick={() => handleClick(elem)}>
+                    menuArr.map((elem, index) => (
+                        <Button isActive={contentType === elem} onClick={() => handleClick(elem)} key={index}>
                             {elem}
                         </Button>
                     ))
@@ -45,7 +53,7 @@ export default function Main() {
                             <SectionBalance />
                             <SectionBalance />
                             <SectionBalance />
-                            
+
                         </div>
                         <SectionGraphic />
                     </>
