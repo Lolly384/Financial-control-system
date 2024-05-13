@@ -10,33 +10,3 @@ body {
 }
 
 
-.pagination {
-  display: inline-block;
-  display: flex;
-  margin-top: 10px;
-  /* Примерный отступ сверху */
-  align-items: center;
-  justify-content: center;
-  user-select: none;
-  /* Предотвращение выделения текста */
-}
-
-.pagination li {
-  display: inline-block;
-  margin-right: 5px;
-  /* Примерный отступ между элементами */
-  border: 1px solid #ccc;
-  cursor: pointer;
-  background-color: #fff;
-}
-
-.pagination li.active {
-  background-color: #007bff;
-  /* Цвет активной страницы */
-  color: #fff;
-}
-
-.pagination li:hover {
-  background-color: #f0f0f0;
-  /* Цвет при наведении */
-}

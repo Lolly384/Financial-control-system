@@ -3,7 +3,6 @@ import '../Transactions.css';
 import Button from '../../Button/Button';
 import ReactPaginate from 'react-paginate';
 
-
 const trimDate = (longDate) => {
     const date = new Date(longDate);
     const day = date.getDate().toString().padStart(2, '0');
@@ -35,9 +34,25 @@ export default function TableTransaction() {
     const pageCount = Math.ceil(data.length / itemsPerPage);
 
     const handlePageClick = ({ selected }) => {
-        console.log (selected)
         setCurrentPage(selected);
     };
+
+    const handleDelete = async (transactionId) => {
+        try {
+            const response = await fetch(`/api/deleteTransaction/${transactionId}`, {
+                method: 'DELETE',
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete transaction');
+            }
+            // Обновляем данные после удаления транзакции
+            await getTransactions(); // Добавляем await для ожидания завершения обновления данных
+            console.log('Transaction deleted successfully');
+        } catch (error) {
+            console.error('Error deleting transaction:', error);
+        }
+    };
+
 
     const startItem = currentPage * itemsPerPage;
     const endItem = (currentPage + 1) * itemsPerPage;
@@ -59,6 +74,7 @@ export default function TableTransaction() {
                         <th>Отправитель</th>
                         <th>Статус</th>
                         <th>&nbsp;</th>
+                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,7 +91,8 @@ export default function TableTransaction() {
                             <td>{row.status}</td>
                             <td>{row.accounts}</td>
                             <td><Button>Изменить</Button></td>
-                            <td><Button>Удалить</Button></td>
+                            {/* Передаем идентификатор транзакции в handleDelete */}
+                            <td><Button onClick={() => handleDelete(row.transaction_id)}>Удалить</Button></td>
                         </tr>
                     ))}
                 </tbody>

@@ -26,4 +26,19 @@ module.exports = class {
             res.status(500).json({ message: 'Error adding transaction' });
         }
     }
+
+    deleteTransaction = async (req, res) => {
+        console.log(req.params);
+        const { id } = req.params;
+        try {
+            const deletedTransaction = await Transaction.findByIdAndDelete(id);
+            if (!deletedTransaction) {
+                return res.status(404).json({ message: 'Транзакция не найдена' });
+            }
+            res.status(200).json({ message: 'Транзакция успешно удалена', deletedTransaction });
+        } catch (error) {
+            console.error('Ошибка при удалении транзакции:', error);
+            res.status(500).json({ message: 'Ошибка при удалении транзакции' });
+        }
+    };
 }
