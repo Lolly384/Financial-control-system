@@ -75,18 +75,90 @@ module.exports = class {
     }
   };
 
-  deleteTransaction(transactionId) {
+  deleteTransaction = async (transaction_id) => {
+    console.log(transaction_id);
     try {
-      console.log(transactionId);
-      const deletedTransaction = Transaction.findByIdAndDelete(transactionId);
-      if (!deletedTransaction) {
+      const queryString = "DELETE FROM transactions WHERE transaction_id = $1";
+      const values = [transaction_id];
+      const result = await this.pool.query(queryString, values);
+
+      if (result.rowCount === 0) {
+        console.error('Error adding transaction to DB:', error);
+        // Если ни одна строка не была удалена, то транзакция с заданным id не была найдена
         return null;
       }
-      return deletedTransaction;
+
+      // Возвращаем результат удаления
+      return result.rowCount;
     } catch (error) {
       throw new Error('Ошибка при удалении транзакции из базы данных:', error);
     }
   }
+
+  deleteTask = async (id) => {
+    try {
+      const queryString = "DELETE FROM task WHERE id = $1";
+      const values = [id];
+      const result = await this.pool.query(queryString, values);
+
+      if (result.rowCount === 0) {
+        console.error('Error adding task to DB:', error);
+        // Если ни одна строка не была удалена, то транзакция с заданным id не была найдена
+        return null;
+      }
+
+      // Возвращаем результат удаления
+      return result.rowCount;
+    } catch (error) {
+      throw new Error('Ошибка при удалении транзакции из базы данных:', error);
+    }
+  }
+
+  async changeTask(id, name, description, requirements, additionalreq) {
+    try {
+      const queryString = `
+        UPDATE task 
+        SET name = $2, description = $3, requirements = $4, additionalreq = $5
+        WHERE id = $1`;
+      const values = [id, name, description, requirements, additionalreq];
+      const result = await this.pool.query(queryString, values);
+  
+      if (result.rowCount === 0) {
+        console.error('Error changing task in DB: No rows affected');
+        // Если ни одна строка не была изменена, то задача с заданным id не была найдена
+        return null;
+      }
+  
+      // Возвращаем результат изменения
+      return result.rowCount;
+    } catch (error) {
+      throw new Error('Ошибка при изменении задачи в базе данных: ' + error.message);
+    }
+  }
+
+  async changeTransaction(transaction_id, type, sum, date, category, description, recipient, sender, status, accounts) {
+    try {
+        const queryString = `
+            UPDATE transactions 
+            SET type = $2, sum = $3, date = $4, category = $5, description = $6, recipient = $7, sender = $8, status = $9, accounts = $10
+            WHERE transaction_id = $1`;
+        const values = [transaction_id, type, sum, date, category, description, recipient, sender, status, accounts];
+        const result = await this.pool.query(queryString, values);
+
+        if (result.rowCount === 0) {
+            console.error('Error changing transaction in DB: No rows affected');
+            // Если ни одна строка не была изменена, то задача с заданным id не была найдена
+            return null;
+        }
+
+        // Возвращаем результат изменения
+        return result.rowCount;
+    } catch (error) {
+        throw new Error('Ошибка при изменении транзакции в базе данных: ' + error.message);
+    }
+}
+
+  
 
 
 };

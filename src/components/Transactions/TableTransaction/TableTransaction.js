@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import '../Transactions.css';
 import Button from '../../Button/Button';
 import ReactPaginate from 'react-paginate';
+import FormChangeTransaction from '../FormChangeTransaction/FormChangeTransaction';
+import Modal from 'react-modal';
 
 const trimDate = (longDate) => {
     const date = new Date(longDate);
@@ -15,7 +17,8 @@ const trimDate = (longDate) => {
 export default function TableTransaction() {
     const [currentPage, setCurrentPage] = useState(0);
     const [data, setData] = useState([]);
-    const itemsPerPage = 10; // Количество элементов на странице
+    const [modalIsOpen, setModalIsOpen] = useState({});
+    const itemsPerPage = 5; // Количество элементов на странице
 
     const getTransactions = async () => {
         try {
@@ -37,22 +40,33 @@ export default function TableTransaction() {
         setCurrentPage(selected);
     };
 
-    const handleDelete = async (transactionId) => {
+    const handleDelete = async (e) => {
+
         try {
-            const response = await fetch(`/api/deleteTransaction/${transactionId}`, {
-                method: 'DELETE',
+
+            const response = await fetch('api/deleteTransaction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(e)
             });
             if (!response.ok) {
                 throw new Error('Failed to delete transaction');
             }
-            // Обновляем данные после удаления транзакции
-            await getTransactions(); // Добавляем await для ожидания завершения обновления данных
-            console.log('Transaction deleted successfully');
+            console.log('Transaction added successfully');
         } catch (error) {
-            console.error('Error deleting transaction:', error);
+            console.error('Error adding transaction:', error);
         }
     };
 
+    const openModal = (index) => {
+        setModalIsOpen({ ...modalIsOpen, [index]: true });
+    };
+
+    const closeModal = (index) => {
+        setModalIsOpen({ ...modalIsOpen, [index]: false });
+    };
 
     const startItem = currentPage * itemsPerPage;
     const endItem = (currentPage + 1) * itemsPerPage;
@@ -70,8 +84,8 @@ export default function TableTransaction() {
                         <th>Категория</th>
                         <th>Описание</th>
                         <th>Счет</th>
-                        <th>Получатель</th>
                         <th>Отправитель</th>
+                        <th>Получатель</th>
                         <th>Статус</th>
                         <th>&nbsp;</th>
                         <th>&nbsp;</th>
@@ -86,13 +100,17 @@ export default function TableTransaction() {
                             <td>{trimDate(row.date)}</td>
                             <td>{row.category}</td>
                             <td>{row.description}</td>
-                            <td>{row.recipient}</td>
-                            <td>{row.sender}</td>
-                            <td>{row.status}</td>
                             <td>{row.accounts}</td>
-                            <td><Button>Изменить</Button></td>
+                            <td>{row.sender}</td>
+                            <td>{row.recipient}</td>
+                            <td>{row.status}</td>
+                            
+                            <td><Button onClick={() => openModal(index)}>Изменить</Button></td>
+                            <Modal isOpen={modalIsOpen[index]} onRequestClose={() => closeModal(index)}>
+                                <FormChangeTransaction transaction={row} />
+                            </Modal>
                             {/* Передаем идентификатор транзакции в handleDelete */}
-                            <td><Button onClick={() => handleDelete(row.transaction_id)}>Удалить</Button></td>
+                            <td><Button onClick={() => handleDelete(row)}>Удалить</Button></td>
                         </tr>
                     ))}
                 </tbody>

@@ -24,7 +24,7 @@ export default function Transactions() {
             <div className='transactions-butGroup'>
                 <Button onClick={openModal}>Добавить</Button>
                 <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
-                    <FormAddTransaction />
+                    <FormAddTransaction textButton = "Добавить" />
                 </Modal>
             </div>
             {!isModalOpen && (
