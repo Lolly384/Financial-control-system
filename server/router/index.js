@@ -10,9 +10,8 @@ const {getTask, addTask, deleteTask, changeTask} =  new TaskClass();
 const UserClass = require("../controllers/user");
 const {registrUser, loginUser} =  new UserClass();
 
-
 const AccountsClass = require("../controllers/accounts");
-const {getAccounts, addAccount} =  new AccountsClass();
+const {getAccounts, addAccount, updateAccountBalance} =  new AccountsClass();
 
 router.get('/test', (req, res) => {
     res.status(200).json({ success: "true1" })
@@ -34,5 +33,6 @@ router.post("/register", registrUser)
 
 router.get('/getAccounts', getAccounts);
 router.post('/addAccount', addAccount);
+router.post('/updateAccountBalance', updateAccountBalance);
 
 module.exports = router;

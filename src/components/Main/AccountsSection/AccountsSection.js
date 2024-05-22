@@ -1,55 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Button from "../../Button/Button";
+import FormAddTransaction from '../../Transactions/FornAddTransaction/FormAddTransaction';
 import './AccountsSection.css';
 
-// Компонент для добавления транзакции
-function FormAddTransaction({ accountId, transactionType, onClose, onTransactionSuccess }) {
-    const [amount, setAmount] = useState('');
-
-    const handleTransaction = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await fetch('/api/addTransaction', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ accountId, amount, type: transactionType })
-            });
-
-            if (response.ok) {
-                const updatedAccount = await response.json();
-                onTransactionSuccess(updatedAccount);
-                onClose();
-            } else {
-                console.error('Error processing transaction');
-            }
-        } catch (error) {
-            console.error('Error processing transaction:', error);
-        }
-    };
-
-    return (
-        <div className="modal">
-            <div className="modal-content">
-                <h2>{transactionType === 'deposit' ? 'Пополнить счет' : 'Снять со счета'}</h2>
-                <input
-                    type="number"
-                    placeholder="Сумма"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                />
-                <div className='modal-content-butGroup'>
-                    <Button onClick={handleTransaction}>Подтвердить</Button>
-                    <Button onClick={onClose}>Отмена</Button>
-                </div>
-            </div>
-        </div>
-    );
-}
-
-// Основной компонент для управления счетами
 export default function AccountsSection() {
     const [accounts, setAccounts] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import './FormAddTransaction.css'
+import React, { useState, useEffect } from 'react';
+import './FormAddTransaction.css';
 import Button from '../../Button/Button';
 
-export default function FormAddTransaction({onTransactionAdded}) {
+export default function FormAddTransaction({ onTransactionAdded }) {
     const [formData, setFormData] = useState({
         type: '',
         sum: '',
@@ -15,22 +15,61 @@ export default function FormAddTransaction({onTransactionAdded}) {
         accounts: ''
     });
 
+    const [accounts, setAccounts] = useState([]);
+
+    useEffect(() => {
+        const fetchAccounts = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/getAccounts', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+                setAccounts(data);
+            } catch (error) {
+                console.error('Error fetching accounts:', error);
+            }
+        };
+
+        fetchAccounts();
+    }, []);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        //Проверяем, если введенное значение не является числом или не более 2 цифр после запятой, то обновляем состояние
         if (name === "sum" && !isNaN(value) && /^\d*\.?\d{0,2}$/.test(value)) {
             setFormData({ ...formData, [name]: value });
         } else if (name !== "sum") {
             setFormData({ ...formData, [name]: value });
         }
     };
-    
+
+    const updateAccountBalance = async (accountName, newBalance) => {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch('/api/updateAccountBalance', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ accountName, newBalance })
+            });
+
+            if (!response.ok) {
+                console.error('Error updating account balance');
+            }
+        } catch (error) {
+            console.error('Error updating account balance:', error);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch('api/addTransaction', {
+            const response = await fetch('/api/addTransaction', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -38,16 +77,42 @@ export default function FormAddTransaction({onTransactionAdded}) {
                 },
                 body: JSON.stringify(formData)
             });
-            try {
-                // Логика для добавления транзакции
-                // После успешного добавления вызываем функцию для обновления таблицы
+
+            if (response.ok) {
+                const account = accounts.find(account => account.id === formData.accounts);
+                if (account) {
+                    const newBalance = calculateNewBalance(account.balance, formData.type, parseFloat(formData.sum));
+                    
+                    await updateAccountBalance(account.name, newBalance);
+                }
                 await onTransactionAdded();
-            } catch (error) {
-                console.error('Error adding transaction:', error);
+                console.log('Transaction added successfully');
+            } else {
+                console.error('Error adding transaction');
             }
-            console.log('Transaction added successfully');
         } catch (error) {
             console.error('Error adding transaction:', error);
+        }
+    };
+
+    const calculateNewBalance = (currentBalance, transactionType, amount) => {
+        switch (transactionType) {
+            case 'Пополнение':
+            case 'Зачисление':
+            case 'Возврат':
+            case 'Пополнение счета':
+                return currentBalance + amount;
+            case 'Снятие':
+            case 'Перевод':
+            case 'Платеж':
+            case 'Списание':
+            case 'Комиссии':
+            case 'Снятие наличных':
+            case 'Перевод на карту':
+            case 'Оплата услуг':
+                return currentBalance - amount;
+            default:
+                return currentBalance;
         }
     };
 
@@ -61,7 +126,7 @@ export default function FormAddTransaction({onTransactionAdded}) {
                     <option value="Снятие">Снятие</option>
                     <option value="Перевод">Перевод</option>
                     <option value="Возврат">Возврат</option>
-                    <option value="Платешь">Платешь</option>
+                    <option value="Платеж">Платеж</option>
                     <option value="Автоплатеж">Автоплатеж</option>
                     <option value="Списание">Списание</option>
                     <option value="Зачисление">Зачисление</option>
@@ -79,11 +144,11 @@ export default function FormAddTransaction({onTransactionAdded}) {
             </label>
             <label>
                 Сумма:
-                <input type="number" name="sum" value={formData.sum} onChange={handleChange} placeholder="00.00" />
+                <input type="number" name="sum" value={formData.sum} onChange={handleChange} placeholder="00.00" required />
             </label>
             <label>
                 Дата:
-                <input type="date" name="date" value={formData.date} onChange={handleChange} required/>
+                <input type="date" name="date" value={formData.date} onChange={handleChange} required />
             </label>
             <label>
                 Категория:
@@ -131,15 +196,20 @@ export default function FormAddTransaction({onTransactionAdded}) {
                     <option value="">Выберите статус операции</option>
                     <option value="Успешно">Успешно</option>
                     <option value="Неудачно">Неудачно</option>
-                    {/* Добавьте другие категории по аналогии */}
                 </select>
             </label>
             <label>
                 Счет:
-                <input type="text" name="accounts" value={formData.accounts} onChange={handleChange} />
+                <select name="accounts" value={formData.accounts} onChange={handleChange} required>
+                    <option value="">Выберите счет</option>
+                    {accounts.map(account => (
+                        <option key={account.id} value={account.id}>
+                            {account.name}
+                        </option>
+                    ))}
+                </select>
             </label>
             <Button type="submit">Добавить</Button>
-
         </form>
     );
 }

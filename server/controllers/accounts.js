@@ -31,4 +31,18 @@ module.exports = class {
             res.status(500).json({ message: 'Error adding account' });
         }
     }
+
+    updateAccountBalance = async (req, res) => {
+        try {
+            const { accountName, newBalance } = req.body;
+    
+            // Обновляем баланс счёта
+            const account = await DB.updateAccountBalance(accountName, newBalance);
+            res.status(200).json(account);
+        } catch (error) {
+            console.error('Error updating account balance:', error);
+            res.status(500).json({ message: 'Error updating account balance' });
+        }
+    };
+
 }

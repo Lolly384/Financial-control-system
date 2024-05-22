@@ -46,7 +46,7 @@ module.exports = class {
       throw error; // Пробрасываем ошибку, чтобы обработать её в вызывающем коде
     }
   }
-  
+
   // Add
   addTransaction = async (type, sum, date, category, description, recipient, sender, status, accounts, username) => {
     try {
@@ -228,18 +228,19 @@ module.exports = class {
       throw error;
     }
   }
-  // addTask = async (name, description, requirements, additionalreq, username) => {
-  //   try {
-  //     const result = await this.pool.query(
-  //       'INSERT INTO task (name, description, requirements, additionalreq, username) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-  //       [name, description, requirements, additionalreq, username]
-  //     );
-  //     return result.rows[0];
-  //   } catch (error) {
-  //     console.error('Ошибка при добавлении задачи:', error);
-  //     throw error;
-  //   }
-  // };
+
+  updateAccountBalance = async (name, newBalance) => {
+    try {
+      const result = await pool.query(
+        'UPDATE accounts SET balance = $1 WHERE name = $2 RETURNING *',
+        [newBalance, name]
+      );
+      return result.rows[0];
+    } catch (error) {
+      console.error('Error updating account balance:', error);
+      throw error;
+    }
+  };
 
 
 };
