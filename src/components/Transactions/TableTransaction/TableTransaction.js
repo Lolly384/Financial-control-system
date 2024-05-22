@@ -14,7 +14,7 @@ const trimDate = (longDate) => {
     return formattedDate;
 }
 
-export default function TableTransaction() {
+export default function TableTransaction({ tableDataChanged, setTableDataChanged }) {
     const [currentPage, setCurrentPage] = useState(0);
     const [data, setData] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState({});
@@ -22,7 +22,11 @@ export default function TableTransaction() {
 
     const getTransactions = async () => {
         try {
-            const response = await fetch("/api/getTransactions");
+            const response = await fetch("/api/getTransactions", {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` // Добавляем заголовок Authorization с токеном
+                }
+            });
             const fetchedData = await response.json();
             setData(fetchedData);
         } catch (error) {
@@ -32,7 +36,7 @@ export default function TableTransaction() {
 
     useEffect(() => {
         getTransactions();
-    }, []);
+    }, [tableDataChanged]);
 
     const pageCount = Math.ceil(data.length / itemsPerPage);
 
@@ -40,32 +44,40 @@ export default function TableTransaction() {
         setCurrentPage(selected);
     };
 
-    const handleDelete = async (e) => {
-
+    const handleDelete = async (row) => {
         try {
-
             const response = await fetch('api/deleteTransaction', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(e)
+                body: JSON.stringify(row)
             });
-            if (!response.ok) {
+            if (response.ok) {
+                console.log('Transaction deleted successfully');
+                // Обновляем данные транзакций после успешного удаления
+                await getTransactions();
+            } else {
                 throw new Error('Failed to delete transaction');
             }
-            console.log('Transaction added successfully');
         } catch (error) {
-            console.error('Error adding transaction:', error);
+            console.error('Error deleting transaction:', error);
         }
+    };
+
+    const handleTransactionChange = async () => {
+        // Обновляем данные транзакций
+        await getTransactions();
+        // Закрываем все модальные окна
+        setModalIsOpen({});
     };
 
     const openModal = (index) => {
         setModalIsOpen({ ...modalIsOpen, [index]: true });
     };
-
-    const closeModal = (index) => {
-        setModalIsOpen({ ...modalIsOpen, [index]: false });
+    
+    const closeModal = () => {
+        setModalIsOpen({});
     };
 
     const startItem = currentPage * itemsPerPage;
@@ -106,8 +118,8 @@ export default function TableTransaction() {
                             <td>{row.status}</td>
                             
                             <td><Button onClick={() => openModal(index)}>Изменить</Button></td>
-                            <Modal isOpen={modalIsOpen[index]} onRequestClose={() => closeModal(index)}>
-                                <FormChangeTransaction transaction={row} />
+                            <Modal isOpen={modalIsOpen[index]} onRequestClose={closeModal}>
+                                <FormChangeTransaction transaction={row} onTransactionChange={handleTransactionChange}/>
                             </Modal>
                             {/* Передаем идентификатор транзакции в handleDelete */}
                             <td><Button onClick={() => handleDelete(row)}>Удалить</Button></td>

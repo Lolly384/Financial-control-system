@@ -14,7 +14,6 @@ app.use(express.urlencoded({ extended: true })); // for parsing application/x-ww
 app.use('/',express.static(path.join(__dirname, '../dist/spa')));
 app.use('/api', router);
 
-
 server.listen(3001, async () => {
   DB.connect();
   console.log('We are live on ' + 3001);

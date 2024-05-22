@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../../Button/Button';
 
-export default function FormAddTask() {
+export default function FormAddTask({onCloseModal}) {
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -16,11 +16,13 @@ export default function FormAddTask() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const token = localStorage.getItem('token');
         try {
             const response = await fetch('api/addTask', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(formData)
             });
@@ -28,6 +30,7 @@ export default function FormAddTask() {
                 throw new Error('Failed to add task');
             }
             console.log('Task added successfully');
+            onCloseModal();
         } catch (error) {
             console.error('Error adding task:', error);
         }

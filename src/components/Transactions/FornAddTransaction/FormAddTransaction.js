@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './FormAddTransaction.css'
 import Button from '../../Button/Button';
 
-export default function FormAddTransaction() {
+export default function FormAddTransaction({onTransactionAdded}) {
     const [formData, setFormData] = useState({
         type: '',
         sum: '',
@@ -24,19 +24,26 @@ export default function FormAddTransaction() {
             setFormData({ ...formData, [name]: value });
         }
     };
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const token = localStorage.getItem('token');
         try {
             const response = await fetch('api/addTransaction', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(formData)
             });
-            if (!response.ok) {
-                throw new Error('Failed to add transaction');
+            try {
+                // Логика для добавления транзакции
+                // После успешного добавления вызываем функцию для обновления таблицы
+                await onTransactionAdded();
+            } catch (error) {
+                console.error('Error adding transaction:', error);
             }
             console.log('Transaction added successfully');
         } catch (error) {
@@ -50,6 +57,8 @@ export default function FormAddTransaction() {
                 Тип операции:
                 <select name="type" value={formData.type} onChange={handleChange} required>
                     <option value="">Выберите тип операции</option>
+                    <option value="Пополнение">Пополнение</option>
+                    <option value="Снятие">Снятие</option>
                     <option value="Перевод">Перевод</option>
                     <option value="Возврат">Возврат</option>
                     <option value="Платешь">Платешь</option>

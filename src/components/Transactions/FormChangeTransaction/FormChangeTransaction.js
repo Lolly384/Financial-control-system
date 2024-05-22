@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../../Button/Button';
 
-export default function FormChangeTransaction({transaction}) {
+export default function FormChangeTransaction({transaction, onTransactionChange}) {
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -55,8 +55,12 @@ export default function FormChangeTransaction({transaction}) {
                 },
                 body: JSON.stringify(formData)
             });
-            if (!response.ok) {
-                throw new Error('Failed to add transaction');
+            if (response.ok) {
+                console.log('Transaction changed successfully');
+                // После успешного изменения транзакции вызываем функцию для обновления данных транзакций
+                onTransactionChange();
+            } else {
+                throw new Error('Failed to change transaction');
             }
             console.log('Transaction added successfully');
         } catch (error) {

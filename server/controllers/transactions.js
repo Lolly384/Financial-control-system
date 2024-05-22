@@ -1,15 +1,36 @@
 const db = require('../db');
 const DB = new db();
+const jwt = require('jsonwebtoken');
 
 module.exports = class {
     getTransactions = async (req, res) => {
-        const transactions = await DB.getTransactions();
-        console.log(transactions)
-        res.status(200).json(transactions)
+        try {
+            const token = req.headers.authorization && req.headers.authorization.split(' ')[1]; // Получаем токен из заголовка запроса
+            if (!token) {
+                throw new Error('Токен отсутствует');
+            }
+    
+            const decodedToken = jwt.verify(token, process.env.JWT_SECRET || 'your_secret_key_here'); // Декодируем токен
+            const { username } = decodedToken; // Получаем имя пользователя из декодированного токена
+    
+            // Выполняем запрос к базе данных для получения транзакций пользователя
+            const transactions = await DB.getTransactions(username);
+            res.status(200).json(transactions);
+        } catch (error) {
+            console.error('Ошибка при выполнении запроса:', error);
+            res.status(500).json({ error: 'Ошибка при выполнении запроса' });
+        }
     }
 
     addTransaction = async (req, res) => {
         try {
+            const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+            if (!token) {
+                throw new Error('Токен отсутствует');
+            }
+
+            const decodedToken = jwt.verify(token, process.env.JWT_SECRET || 'your_secret_key_here');
+            const { username } = decodedToken;
             // Получаем данные транзакции из тела запроса
             const { type, sum, date, category, description, recipient, sender, status, accounts } = req.body;
 
@@ -18,7 +39,7 @@ module.exports = class {
             const formattedDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]); // -1 потому что в JavaScript месяцы начинаются с 0
 
             // Вызываем метод addTransaction из вашего модуля DB, передавая ему данные транзакции
-            const transaction = await DB.addTransaction(type, sum, formattedDate, category, description, recipient, sender, status, accounts);
+            const transaction = await DB.addTransaction(type, sum, formattedDate, category, description, recipient, sender, status, accounts, username);
 
             // Отправляем успешный результат клиенту
             res.status(200).json(transaction);

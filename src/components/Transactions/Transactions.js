@@ -8,7 +8,7 @@ import TableTransaction from './TableTransaction/TableTransaction';
 export default function Transactions() {
     const [isModalOpen, setIsModalOpen] = useState(false); // Состояние для отслеживания открытия/закрытия модального окна
     const [modalIsOpen, setModalIsOpen] = useState(false);
-
+    const [tableDataChanged, setTableDataChanged] = useState(false);
     const openModal = () => {
         setModalIsOpen(true);
     };
@@ -16,7 +16,13 @@ export default function Transactions() {
     const closeModal = () => {
         setModalIsOpen(false);
     };
-
+    const handleTransactionAdded = async () => {
+        // Закрыть модальное окно после добавления транзакции
+        closeModal();
+        // Обновить таблицу после добавления транзакции
+        // Установить флаг изменения данных таблицы
+        setTableDataChanged(true);
+    };
     
 
     return (
@@ -24,12 +30,12 @@ export default function Transactions() {
             <div className='transactions-butGroup'>
                 <Button onClick={openModal}>Добавить</Button>
                 <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
-                    <FormAddTransaction textButton = "Добавить" />
+                    <FormAddTransaction onTransactionAdded={handleTransactionAdded} />
                 </Modal>
             </div>
             {!isModalOpen && (
                 <>
-                    <TableTransaction />
+                    <TableTransaction tableDataChanged={tableDataChanged} setTableDataChanged={setTableDataChanged}/>
                 </>
             )}
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Button from '../../Button/Button';
 
-export default function FormChangeTask({ task, onSubmit }) {
+export default function FormChangeTask({ task, onCloseModal }) {
     const [formData, setFormData] = useState({
         id: '',
         name: '',
@@ -45,6 +45,9 @@ export default function FormChangeTask({ task, onSubmit }) {
                 throw new Error('Failed to change task');
             }
             console.log('Task added successfully');
+
+            // Закрываем модальное окно
+            onCloseModal();
         } catch (error) {
             console.error('Error adding task:', error);
         }

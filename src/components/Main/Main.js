@@ -3,9 +3,11 @@ import Button from '../Button/Button'
 import SectionBalance from '../SectionBalance/SectionBalance'
 import SectionGraphic from '../SectionGraphic/SectionGraphic'
 import Transactions from '../Transactions/Transactions'
+import Calculators from '../SectionCalculators/SectionCalculators'
 import Tasks from '../Tasks/Tasks'
 import Now from '../Now/Now'
 import { useState, useEffect } from 'react'
+import AccountsSection from './AccountsSection/AccountsSection'
 
 
 export default function Main() {
@@ -13,26 +15,11 @@ export default function Main() {
     const [contentType, setContentType] = useState('Обзор');
     let menuArr = ['Обзор', 'Счета', 'Транзакции', 'Задачи', 'Бюджетирование', 'Калькуляторы', 'Отчёты']
 
+
     function handleClick(type) {
         console.log("button cliked", type)
         setContentType(type)
     }
-
-    // main.js
-    // const testRequest = async () => {
-    //     try {
-    //         const response = await fetch("/api/getTransactions");
-    //         const data = await response.json(); // Ждем разрешения промиса
-    //         console.log(data); // Выводим данные, а не промис
-    //     } catch (error) {
-    //         console.error("Ошибка при выполнении запроса:", error);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     testRequest();
-    // }, []);
-
 
     return (
         <main className='App-main'>
@@ -62,6 +49,7 @@ export default function Main() {
                 {contentType === 'Счета' && (
                     <>
                         <Now contentType={contentType}></Now>
+                        <AccountsSection />
                     </>
                 )}
 
@@ -87,7 +75,7 @@ export default function Main() {
 
                 {contentType === 'Калькуляторы' && (
                     <>
-                        <Now contentType={contentType}></Now>
+                        <Calculators />
                     </>
                 )}
 

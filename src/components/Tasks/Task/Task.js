@@ -17,7 +17,11 @@ export default function Task() {
 
     const getTask = async () => {
         try {
-            const response = await fetch("/api/getTask");
+            const response = await fetch("/api/getTask", {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` // Добавляем заголовок Authorization с токеном
+                }
+            });
             const fetchedData = await response.json();
             setData(fetchedData);
         } catch (error) {
@@ -43,10 +47,12 @@ export default function Task() {
 
     const closeModalAdd = () => {
         setModalIsOpenAdd(false);
+        getTask()
     };
 
     const closeModalChange = () => {
         setModalIsOpenChange(false);
+        getTask()
     };
 
     const handleDelete = async (task) => {
@@ -62,6 +68,8 @@ export default function Task() {
                 throw new Error('Failed to delete task');
             }
             console.log('Task deleted successfully');
+            // После удаления задачи вызываем функцию для обновления данных
+            getTask();
         } catch (error) {
             console.error('Error deleting task:', error);
         }
@@ -75,12 +83,12 @@ export default function Task() {
                     <>
                         <div className='tasks-butGroup'>
                             <Modal isOpen={modalIsOpenAdd} onRequestClose={closeModalAdd}>
-                                <FormAddTask />
+                                <FormAddTask onCloseModal={closeModalAdd}/>
                             </Modal>
                             <Button onClick={openModalAdd}>Добавить</Button>
 
                             <Modal isOpen={modalIsOpenChange} onRequestClose={closeModalChange}>
-                                <FormChangeTask task={task} />
+                                <FormChangeTask task={task}  onCloseModal={closeModalChange}/>
                             </Modal>
                             <Button onClick={openModalChange}>Изменить</Button>
 
