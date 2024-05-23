@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Button from "../../Button/Button";
 import FormAddTransaction from '../../Transactions/FornAddTransaction/FormAddTransaction';
+import Modal from 'react-modal';
 import './AccountsSection.css';
 
 export default function AccountsSection() {
@@ -10,20 +11,42 @@ export default function AccountsSection() {
     const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
     const [selectedAccount, setSelectedAccount] = useState(null);
     const [transactionType, setTransactionType] = useState('');
+    const [selectedAccountForTransaction, setSelectedAccountForTransaction] = useState(null); // Состояние для хранения выбранного счета
+
+    const fetchAccounts = async () => {
+        try {
+            const response = await fetch('/api/getAccounts');
+            const data = await response.json();
+            setAccounts(data);
+        } catch (error) {
+            console.error('Error fetching accounts:', error);
+        }
+    };
 
     useEffect(() => {
-        const fetchAccounts = async () => {
-            try {
-                const response = await fetch('/api/getAccounts');
-                const data = await response.json();
-                setAccounts(data);
-            } catch (error) {
-                console.error('Error fetching accounts:', error);
-            }
-        };
-
         fetchAccounts();
     }, []);
+
+    const handleDeleteAccount = async (row) => {
+        try {
+            const response = await fetch('api/deleteAccount', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(row)
+            });
+            if (response.ok) {
+                console.log('Account deleted successfully');
+                // Обновляем данные счетов после успешного удаления
+                await fetchAccounts();
+            } else {
+                throw new Error('Failed to delete Account');
+            }
+        } catch (error) {
+            console.error('Error deleting Account:', error);
+        }
+    };
 
     const handleCreateAccount = async () => {
         try {
@@ -50,10 +73,12 @@ export default function AccountsSection() {
         }
     };
 
-    const handleTransactionSuccess = (updatedAccount) => {
-        setAccounts(accounts.map(account => 
-            account.id === updatedAccount.id ? updatedAccount : account
-        ));
+    const handleTransactionAdded = async () => {
+        // Закрыть модальное окно после добавления транзакции
+        setIsTransactionModalOpen(false);
+        // Обновить таблицу после добавления транзакции
+        // Установить флаг изменения данных таблицы
+        // setTableDataChanged(true);
     };
 
     return (
@@ -84,23 +109,21 @@ export default function AccountsSection() {
                     </div>
                 </div>
             )}
-            {isTransactionModalOpen && (
-                <FormAddTransaction
-                    accountId={selectedAccount}
-                    transactionType={transactionType}
-                    onClose={() => setIsTransactionModalOpen(false)}
-                    onTransactionSuccess={handleTransactionSuccess}
-                />
-            )}
+
             <div className="accountsList">
-                {accounts.map(account => (
+                {accounts.map((account, index) => (
                     <div key={account.id} className="accountItem">
                         <strong><p className='accountItem-name'>{account.name}</p></strong>
                         <p>Баланс: {account.balance}</p>
                         <div className='accountsList-groupBut'>
-                            <Button onClick={() => { setSelectedAccount(account.id); setTransactionType('deposit'); setIsTransactionModalOpen(true); }}>Пополнить</Button>
-                            <Button onClick={() => { setSelectedAccount(account.id); setTransactionType('withdraw'); setIsTransactionModalOpen(true); }}>Снять</Button>
-                            <Button>Удалить</Button>
+                            <Button onClick={() => {
+                                setIsTransactionModalOpen(true);
+                                setSelectedAccountForTransaction(account.name); // Передаем название счета в состояние
+                            }}>Транзакция</Button>
+                            <Modal isOpen={isTransactionModalOpen} onRequestClose={() => setIsTransactionModalOpen(false)}>
+                                <FormAddTransaction onTransactionAdded={handleTransactionAdded} selectedAccount={selectedAccountForTransaction} /> {/* Передаем название счета в компонент */}
+                            </Modal>
+                            <Button onClick={() => handleDeleteAccount(account)}>Удалить</Button>
                         </div>
                     </div>
                 ))}

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './FormAddTransaction.css';
 import Button from '../../Button/Button';
-
-export default function FormAddTransaction({ onTransactionAdded }) {
+export default function FormAddTransaction({ onTransactionAdded, selectedAccount }) {
     const [formData, setFormData] = useState({
         type: '',
         sum: '',
@@ -12,7 +11,7 @@ export default function FormAddTransaction({ onTransactionAdded }) {
         recipient: '',
         sender: '',
         status: '',
-        accounts: ''
+        accountName: ''  // Changed 'accounts' to 'accountName' for clarity
     });
 
     const [accounts, setAccounts] = useState([]);
@@ -28,6 +27,7 @@ export default function FormAddTransaction({ onTransactionAdded }) {
                 });
                 const data = await response.json();
                 setAccounts(data);
+                console.log('Fetched accounts:', data);  // Debug: лог получения счетов
             } catch (error) {
                 console.error('Error fetching accounts:', error);
             }
@@ -45,7 +45,7 @@ export default function FormAddTransaction({ onTransactionAdded }) {
         }
     };
 
-    const updateAccountBalance = async (accountName, newBalance) => {
+    const updateAccountBalance = async (accountId, newBalance) => {
         const token = localStorage.getItem('token');
         try {
             const response = await fetch('/api/updateAccountBalance', {
@@ -54,11 +54,13 @@ export default function FormAddTransaction({ onTransactionAdded }) {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ accountName, newBalance })
+                body: JSON.stringify({ id: accountId, newBalance })
             });
 
             if (!response.ok) {
-                console.error('Error updating account balance');
+                const errorData = await response.json();
+                console.error('Ошибка при обновлении баланса:', errorData.message);
+                throw new Error('Ошибка при обновлении баланса');
             }
         } catch (error) {
             console.error('Error updating account balance:', error);
@@ -79,14 +81,20 @@ export default function FormAddTransaction({ onTransactionAdded }) {
             });
 
             if (response.ok) {
-                const account = accounts.find(account => account.id === formData.accounts);
+                console.log('Transaction added successfully');
+
+                console.log('Selected account name:', formData.accountName);  // Debug: вывод выбранного имени счета
+                console.log('Accounts array:', accounts);  // Debug: вывод массива счетов
+
+                const account = accounts.find(account => account.name === formData.accountName);
+                console.log('Selected account:', account);  // Debug: вывод выбранного счета
+
                 if (account) {
                     const newBalance = calculateNewBalance(account.balance, formData.type, parseFloat(formData.sum));
-                    
-                    await updateAccountBalance(account.name, newBalance);
+                    console.log('New balance:', newBalance);  // Debug: вывод нового баланса
+                    await updateAccountBalance(account.id, newBalance); // Передаем account.id
                 }
                 await onTransactionAdded();
-                console.log('Transaction added successfully');
             } else {
                 console.error('Error adding transaction');
             }
@@ -96,12 +104,18 @@ export default function FormAddTransaction({ onTransactionAdded }) {
     };
 
     const calculateNewBalance = (currentBalance, transactionType, amount) => {
+        currentBalance = parseFloat(currentBalance);
+        amount = parseFloat(amount);
+
+        let newBalance = currentBalance;
+
         switch (transactionType) {
             case 'Пополнение':
             case 'Зачисление':
             case 'Возврат':
             case 'Пополнение счета':
-                return currentBalance + amount;
+                newBalance = currentBalance + amount;
+                break;
             case 'Снятие':
             case 'Перевод':
             case 'Платеж':
@@ -110,10 +124,15 @@ export default function FormAddTransaction({ onTransactionAdded }) {
             case 'Снятие наличных':
             case 'Перевод на карту':
             case 'Оплата услуг':
-                return currentBalance - amount;
+                newBalance = currentBalance - amount;
+                break;
             default:
-                return currentBalance;
+                newBalance = currentBalance;
+                break;
         }
+
+        // Возвращаем новое значение с точностью до двух знаков после запятой
+        return Number(newBalance.toFixed(2));
     };
 
     return (
@@ -200,10 +219,10 @@ export default function FormAddTransaction({ onTransactionAdded }) {
             </label>
             <label>
                 Счет:
-                <select name="accounts" value={formData.accounts} onChange={handleChange} required>
+                <select name="accountName" value={selectedAccount} onChange={handleChange} required>
                     <option value="">Выберите счет</option>
                     {accounts.map(account => (
-                        <option key={account.id} value={account.id}>
+                        <option key={account.id} value={account.name}>
                             {account.name}
                         </option>
                     ))}

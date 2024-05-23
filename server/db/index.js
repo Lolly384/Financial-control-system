@@ -229,18 +229,48 @@ module.exports = class {
     }
   }
 
-  updateAccountBalance = async (name, newBalance) => {
+  updateAccountBalance = async (id, newBalance) => {
     try {
-      const result = await pool.query(
-        'UPDATE accounts SET balance = $1 WHERE name = $2 RETURNING *',
-        [newBalance, name]
+      // Проверка на существование счета с уникальным именем
+      const checkResult = await this.pool.query(
+        'SELECT * FROM accounts WHERE id = $1',
+        [id]
       );
+
+      if (checkResult.rowCount === 0) {
+        throw new Error('Account not found');
+      }
+
+      // Обновление баланса счета
+      const result = await this.pool.query(
+        'UPDATE accounts SET balance = $1 WHERE id = $2 RETURNING *',
+        [newBalance, id]
+      );
+
       return result.rows[0];
     } catch (error) {
-      console.error('Error updating account balance:', error);
+      console.error('Error updating account balance DB:', error);
       throw error;
     }
   };
 
+  deleteAccount = async (id) => {
+    try {
+      const queryString = "DELETE FROM accounts WHERE id = $1";
+      const values = [id];
+      const result = await this.pool.query(queryString, values);
+
+      if (result.rowCount === 0) {
+        console.error('Error delete accounts to DB:', error);
+        // Если ни одна строка не была удалена, то транзакция с заданным id не была найдена
+        return null;
+      }
+
+      // Возвращаем результат удаления
+      return result.rowCount;
+    } catch (error) {
+      throw new Error('Ошибка при удалении транзакции из базы данных:', error);
+    }
+  }
 
 };

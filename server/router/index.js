@@ -11,7 +11,7 @@ const UserClass = require("../controllers/user");
 const {registrUser, loginUser} =  new UserClass();
 
 const AccountsClass = require("../controllers/accounts");
-const {getAccounts, addAccount, updateAccountBalance} =  new AccountsClass();
+const {getAccounts, addAccount, updateAccountBalance, deleteAccount} =  new AccountsClass();
 
 router.get('/test', (req, res) => {
     res.status(200).json({ success: "true1" })
@@ -34,5 +34,6 @@ router.post("/register", registrUser)
 router.get('/getAccounts', getAccounts);
 router.post('/addAccount', addAccount);
 router.post('/updateAccountBalance', updateAccountBalance);
+router.post('/deleteAccount', deleteAccount);
 
 module.exports = router;

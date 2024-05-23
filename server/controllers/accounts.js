@@ -1,6 +1,7 @@
 const db = require('../db');
 const DB = new db();
 const jwt = require('jsonwebtoken');
+
 module.exports = class {
 
     getAccounts = async (req, res) => {
@@ -32,16 +33,35 @@ module.exports = class {
         }
     }
 
+    deleteAccount = async (req, res) => {
+        try {
+            const { id } = req.body;
+            const task = await DB.deleteAccount(id);
+
+            res.status(200).json(task);
+        } catch (error) {
+            console.error('Ошибка при удалении Счёта:', error);
+            res.status(500).json({ message: 'Ошибка при удалении Счёта', });
+        }
+    }
+
     updateAccountBalance = async (req, res) => {
         try {
-            const { accountName, newBalance } = req.body;
-    
-            // Обновляем баланс счёта
-            const account = await DB.updateAccountBalance(accountName, newBalance);
+            const { id, newBalance } = req.body;
+            console.log('Received data:', { id, newBalance });
+
+            if (!id || newBalance == null) {
+                console.log('Validation failed');
+                return res.status(400).json({ message: 'id and newBalance are required' });
+            }
+
+            console.log('Updating account balance...');
+            const account = await DB.updateAccountBalance(id, newBalance);
+            console.log('Account updated:', account);
             res.status(200).json(account);
         } catch (error) {
-            console.error('Error updating account balance:', error);
-            res.status(500).json({ message: 'Error updating account balance' });
+            console.error('Error updating account balance controller:', error);
+            res.status(500).json({ message: 'Error updating account balance controller' });
         }
     };
 
