@@ -1,0 +1,66 @@
+.sectionTask {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: calc(33.333% - 20px);
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.header-title {
+    font-size: 1.4em;
+   
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.task-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 5px;
+}
+.task-item-group{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 500px; /* Максимальная высота блока */
+    overflow: hidden; /* Скрытие выхода текста за пределы блока */
+    overflow-y: auto;
+}
+.task-item-group p {
+    margin-bottom: 5px; /* Добавление небольшого отступа между параграфами */
+    white-space: nowrap; /* Предотвращение переноса текста на новую строку */
+    overflow: hidden; /* Скрытие выхода текста за пределы блока */
+    text-overflow: ellipsis; /* Отображение многоточия, если текст переполнен */
+}
+.task-title {
+    font-size: 18px;
+    color: #333;
+}
+
+.task-description-sectiontask {
+    color: #666;
+}
+
+.task-status {
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+}

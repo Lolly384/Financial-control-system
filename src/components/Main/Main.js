@@ -1,6 +1,6 @@
 import './Main.css'
 import Button from '../Button/Button'
-import SectionBalance from '../SectionBalance/SectionBalance'
+import SectionBalance from './SectionBalance/SectionBalance'
 import SectionGraphic from '../SectionGraphic/SectionGraphic'
 import Transactions from '../Transactions/Transactions'
 import Calculators from '../SectionCalculators/SectionCalculators'
@@ -8,6 +8,8 @@ import Tasks from '../Tasks/Tasks'
 import Now from '../Now/Now'
 import { useState, useEffect } from 'react'
 import AccountsSection from './AccountsSection/AccountsSection'
+import SectionTransactuin from './SectionTransaction/SectionTransaction'
+import SectionTask from './SectionTask/SectionTask'
 
 
 export default function Main() {
@@ -37,10 +39,11 @@ export default function Main() {
                     <>
                         <Now contentType={contentType}></Now>
                         <div className='App-main-contents-sectionGroup'>
-                            <SectionBalance />
-                            <SectionBalance />
-                            <SectionBalance />
-
+                            <div className='testGroup'>
+                                <SectionBalance />
+                            </div>
+                            <SectionTransactuin />
+                            <SectionTask />
                         </div>
                         <SectionGraphic />
                     </>

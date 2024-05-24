@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Button from "../../Button/Button";
 import FormAddTransaction from '../../Transactions/FornAddTransaction/FormAddTransaction';
+import img from './icons8-card-100.png'
 import Modal from 'react-modal';
 import './AccountsSection.css';
 
@@ -113,7 +114,10 @@ export default function AccountsSection() {
             <div className="accountsList">
                 {accounts.map((account, index) => (
                     <div key={account.id} className="accountItem">
-                        <strong><p className='accountItem-name'>{account.name}</p></strong>
+                        <div className='accountItem-imgAndName'>
+                            <img src={img}></img>
+                            <strong><p className='accountItem-name'>{account.name}</p></strong>
+                        </div>
                         <p>Баланс: {account.balance}</p>
                         <div className='accountsList-groupBut'>
                             <Button onClick={() => {
@@ -121,7 +125,8 @@ export default function AccountsSection() {
                                 setSelectedAccountForTransaction(account.name); // Передаем название счета в состояние
                             }}>Транзакция</Button>
                             <Modal isOpen={isTransactionModalOpen} onRequestClose={() => setIsTransactionModalOpen(false)}>
-                                <FormAddTransaction onTransactionAdded={handleTransactionAdded} selectedAccount={selectedAccountForTransaction} /> {/* Передаем название счета в компонент */}
+                                <FormAddTransaction onTransactionAdded={handleTransactionAdded} selectedAccount={selectedAccountForTransaction} fetchAccounts={fetchAccounts} /> 
+                                
                             </Modal>
                             <Button onClick={() => handleDeleteAccount(account)}>Удалить</Button>
                         </div>

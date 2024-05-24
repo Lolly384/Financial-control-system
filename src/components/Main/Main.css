@@ -1,31 +1,51 @@
-.App-main{
-    margin-top: 5px;
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    height: 800px;
-  }
-  .App-main-menu{
-    padding: 10px 20px;
-    background-color: #D4D4D4;
-    width: 200px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .App-main-contents{
-    background-color: #D4D4D4;
-    height: 100%;
-    width: 100%;
-    padding: 10px 20px;
-  }
-  .App-main-contents-sectionGroup{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 10px;
-    width: 100%;
-
-  }
+.App-main {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
   
+}
+
+.App-main-menu {
+  padding: 10px 20px;
+  background-color: #D4D4D4;
+  width: 200px;
+  min-height: 87.5vh;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.App-main-contents {
+  background-color: #D4D4D4;
+  height: 100%;
+  width: 100%;
+  padding: 10px 20px;
+  min-height: 87.5vh;
+}
+
+.App-main-contents-sectionGroup {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+
+}
+
+.App-main-contents-sectionGroup {
+  margin-top: 10px;
+}
+
+.testGroup {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+
+
+  width: calc(33.333% - 20px);
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+}

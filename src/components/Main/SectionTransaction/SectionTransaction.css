@@ -1,0 +1,77 @@
+.sectionTransaction {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: calc(33.333% - 20px);
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.header-name{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    font-size: 1.4em;
+}
+
+.header-name {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.transaction-item:hover {
+    background-color: #f1f1f1;
+}
+
+.transaction-date,
+.transaction-type,
+.transaction-sum {
+    flex: 1;
+    text-align: center;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+.page-item {
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.page-item a {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+    text-decoration: none;
+}
+
+.page-item a:hover {
+    background-color: #eee;
+}
+
+.active a {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}

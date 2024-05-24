@@ -67,3 +67,9 @@
 .accountsList-groupBut button{
     width: 100%;
 }
+.accountItem-imgAndName{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+}

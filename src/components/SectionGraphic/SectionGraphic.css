@@ -1,11 +1,19 @@
-.sectionGraphic{
+.sectionGraphic {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin-top: 10px;
     border-radius: 15px;
     width: auto;
-    height: 200px;
-    padding: 10px;
+    height: auto; /* Увеличил высоту, чтобы график был лучше виден */
+    padding: 20px;
     background-color: #fff;
-    
+}
+.sectionGraphic h2{
+    padding-top: 20px;
+}
+.victory-container  {
+    width: 100%;
+    height: 100%;
 }

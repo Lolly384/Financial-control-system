@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './FormAddTransaction.css';
 import Button from '../../Button/Button';
-export default function FormAddTransaction({ onTransactionAdded, selectedAccount }) {
+
+export default function FormAddTransaction({ onTransactionAdded, selectedAccount, fetchAccounts }) {
     const [formData, setFormData] = useState({
         type: '',
         sum: '',
@@ -11,7 +12,7 @@ export default function FormAddTransaction({ onTransactionAdded, selectedAccount
         recipient: '',
         sender: '',
         status: '',
-        accountName: ''  // Changed 'accounts' to 'accountName' for clarity
+        accountName: selectedAccount || '' // Инициализация с учетом selectedAccount
     });
 
     const [accounts, setAccounts] = useState([]);
@@ -27,7 +28,7 @@ export default function FormAddTransaction({ onTransactionAdded, selectedAccount
                 });
                 const data = await response.json();
                 setAccounts(data);
-                console.log('Fetched accounts:', data);  // Debug: лог получения счетов
+                console.log('Fetched accounts:', data);
             } catch (error) {
                 console.error('Error fetching accounts:', error);
             }
@@ -35,6 +36,16 @@ export default function FormAddTransaction({ onTransactionAdded, selectedAccount
 
         fetchAccounts();
     }, []);
+
+    useEffect(() => {
+        // Обновление formData при изменении selectedAccount
+        if (selectedAccount) {
+            setFormData(prevFormData => ({
+                ...prevFormData,
+                accountName: selectedAccount
+            }));
+        }
+    }, [selectedAccount]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -61,6 +72,8 @@ export default function FormAddTransaction({ onTransactionAdded, selectedAccount
                 const errorData = await response.json();
                 console.error('Ошибка при обновлении баланса:', errorData.message);
                 throw new Error('Ошибка при обновлении баланса');
+            }else if(response.ok){
+                fetchAccounts();
             }
         } catch (error) {
             console.error('Error updating account balance:', error);
@@ -83,16 +96,16 @@ export default function FormAddTransaction({ onTransactionAdded, selectedAccount
             if (response.ok) {
                 console.log('Transaction added successfully');
 
-                console.log('Selected account name:', formData.accountName);  // Debug: вывод выбранного имени счета
-                console.log('Accounts array:', accounts);  // Debug: вывод массива счетов
+                console.log('Selected account name:', formData.accountName);
+                console.log('Accounts array:', accounts);
 
                 const account = accounts.find(account => account.name === formData.accountName);
-                console.log('Selected account:', account);  // Debug: вывод выбранного счета
+                console.log('Selected account:', account);
 
                 if (account) {
                     const newBalance = calculateNewBalance(account.balance, formData.type, parseFloat(formData.sum));
-                    console.log('New balance:', newBalance);  // Debug: вывод нового баланса
-                    await updateAccountBalance(account.id, newBalance); // Передаем account.id
+                    console.log('New balance:', newBalance);
+                    await updateAccountBalance(account.id, newBalance);
                 }
                 await onTransactionAdded();
             } else {
@@ -131,7 +144,6 @@ export default function FormAddTransaction({ onTransactionAdded, selectedAccount
                 break;
         }
 
-        // Возвращаем новое значение с точностью до двух знаков после запятой
         return Number(newBalance.toFixed(2));
     };
 
@@ -219,7 +231,7 @@ export default function FormAddTransaction({ onTransactionAdded, selectedAccount
             </label>
             <label>
                 Счет:
-                <select name="accountName" value={selectedAccount} onChange={handleChange} required>
+                <select name="accountName" value={formData.accountName} onChange={handleChange} required>
                     <option value="">Выберите счет</option>
                     {accounts.map(account => (
                         <option key={account.id} value={account.name}>
