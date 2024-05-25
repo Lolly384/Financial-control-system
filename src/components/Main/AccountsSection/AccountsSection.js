@@ -4,6 +4,7 @@ import FormAddTransaction from '../../Transactions/FornAddTransaction/FormAddTra
 import img from './icons8-card-100.png'
 import Modal from 'react-modal';
 import './AccountsSection.css';
+import addIcon from './free-icon-add-square-outlined-interface-button-54731.png';
 
 export default function AccountsSection() {
     const [accounts, setAccounts] = useState([]);
@@ -14,7 +15,13 @@ export default function AccountsSection() {
     const [transactionType, setTransactionType] = useState('');
     const [selectedAccountForTransaction, setSelectedAccountForTransaction] = useState(null); // Состояние для хранения выбранного счета
 
+
     const fetchAccounts = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found');
+            return;
+        }
         try {
             const response = await fetch('/api/getAccounts');
             const data = await response.json();
@@ -85,10 +92,10 @@ export default function AccountsSection() {
     return (
         <div className="accountsSection">
             <div className="accountsSection-butMenu">
-                <Button onClick={() => setIsModalOpen(true)}>Создать</Button>
+                <Button onClick={() => setIsModalOpen(true)}><img className='icon' src={addIcon} alt='Создать' /></Button>
             </div>
             {isModalOpen && (
-                <div className="modal">
+                <div className="modal-overlay">
                     <div className="modal-content">
                         <h2>Создать новый счет</h2>
                         <input
@@ -104,8 +111,8 @@ export default function AccountsSection() {
                             onChange={(e) => setNewAccount({ ...newAccount, balance: e.target.value })}
                         />
                         <div className='modal-content-butGroup'>
-                            <Button onClick={handleCreateAccount}>Создать</Button>
-                            <Button onClick={() => setIsModalOpen(false)}>Отмена</Button>
+                            <button className="modal-button" onClick={handleCreateAccount}>Создать</button>
+                            <button className="modal-button" onClick={() => setIsModalOpen(false)}>Отмена</button>
                         </div>
                     </div>
                 </div>
@@ -125,8 +132,8 @@ export default function AccountsSection() {
                                 setSelectedAccountForTransaction(account.name); // Передаем название счета в состояние
                             }}>Транзакция</Button>
                             <Modal isOpen={isTransactionModalOpen} onRequestClose={() => setIsTransactionModalOpen(false)}>
-                                <FormAddTransaction onTransactionAdded={handleTransactionAdded} selectedAccount={selectedAccountForTransaction} fetchAccounts={fetchAccounts} /> 
-                                
+                                <FormAddTransaction onTransactionAdded={handleTransactionAdded} selectedAccount={selectedAccountForTransaction} fetchAccounts={fetchAccounts} />
+
                             </Modal>
                             <Button onClick={() => handleDeleteAccount(account)}>Удалить</Button>
                         </div>

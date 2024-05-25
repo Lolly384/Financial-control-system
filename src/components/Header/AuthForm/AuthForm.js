@@ -48,7 +48,7 @@ export default function AuthForm({ onClose, onLogin }) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className='form' onSubmit={handleSubmit}>
             <h2>{isRegister ? 'Регистрация' : 'Авторизация'}</h2>
             {isRegister && (
                 <div>
@@ -70,10 +70,12 @@ export default function AuthForm({ onClose, onLogin }) {
                     <input type="password" name="password" value={formData.password} onChange={handleChange} required />
                 </label>
             </div>
-            <Button type="submit">{isRegister ? 'Регистрация' : 'Авторизация'}</Button>
-            <Button type="button" onClick={toggleForm}>
-                {isRegister ? 'У вас уже есть аккаунт? Авторизоваться' : 'У вас нет учетной записи? Регистрация'}
-            </Button>
+            <div className='butGroup'>
+                <Button type="submit">{isRegister ? 'Регистрация' : 'Авторизация'}</Button>
+                <Button type="button" onClick={toggleForm}>
+                    {isRegister ? 'У вас уже есть аккаунт? Авторизоваться' : 'У вас нет учетной записи? Регистрация'}
+                </Button>
+            </div>
         </form>
     );
 }

@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import Button from '../Button/Button';
 import FormAddTransaction from './FornAddTransaction/FormAddTransaction';
 import TableTransaction from './TableTransaction/TableTransaction';
+import addIcon from './free-icon-add-square-outlined-interface-button-54731.png';
 
 export default function Transactions() {
     const [isModalOpen, setIsModalOpen] = useState(false); // Состояние для отслеживания открытия/закрытия модального окна
@@ -28,7 +29,7 @@ export default function Transactions() {
     return (
         <section className="transactions">
             <div className='transactions-butGroup'>
-                <Button onClick={openModal}>Добавить</Button>
+                <Button onClick={openModal}><img className='icon' src={addIcon} alt='Добавить' /></Button>
                 <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
                     <FormAddTransaction onTransactionAdded={handleTransactionAdded} />
                 </Modal>

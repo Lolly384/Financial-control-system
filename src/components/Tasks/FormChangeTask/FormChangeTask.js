@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Button from '../../Button/Button';
+import './FormChangeTask.css'
 
 export default function FormChangeTask({ task, onCloseModal }) {
     const [formData, setFormData] = useState({
@@ -54,24 +55,27 @@ export default function FormChangeTask({ task, onCloseModal }) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Название:
-                <input type="text" name="name" value={formData.name} onChange={handleChange} />
-            </label>
-            <label>
-                Описание:
-                <textarea name="description" value={formData.description} onChange={handleChange} />
-            </label>
-            <label>
-                Требования:
-                <textarea name="requirements" value={formData.requirements} onChange={handleChange} />
-            </label>
-            <label>
-                Дополнительные требования:
-                <textarea name="additionalreq" value={formData.additionalreq} onChange={handleChange} />
-            </label>
-            <Button type="submit">Изменить</Button>
-        </form>
+        <div className="form-content">
+            <h2>Редактировать задачу</h2>
+            <form className='form' onSubmit={handleSubmit}>
+                <label>
+                    Название:
+                    <input type="text" name="name" value={formData.name} onChange={handleChange} />
+                </label>
+                <label>
+                    Описание:
+                    <textarea name="description" value={formData.description} onChange={handleChange} />
+                </label>
+                <label>
+                    Требования:
+                    <textarea name="requirements" value={formData.requirements} onChange={handleChange} />
+                </label>
+                <label>
+                    Дополнительные требования:
+                    <textarea name="additionalreq" value={formData.additionalreq} onChange={handleChange} />
+                </label>
+                <Button type="submit">Изменить</Button>
+            </form>
+        </div>
     );
 }

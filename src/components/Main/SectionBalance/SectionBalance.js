@@ -44,12 +44,13 @@ export default function SectionBalance() {
                     </div>
                 ))}
             </div>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
             <ReactPaginate
                 pageCount={pageCount}
                 pageRangeDisplayed={5}
                 marginPagesDisplayed={1}
-                previousLabel={"Пред."}
-                nextLabel={"След."}
+                previousLabel={<i className="fas fa-chevron-left"></i>} // Иконка стрелки влево
+                nextLabel={<i className="fas fa-chevron-right"></i>} // Иконка стрелки вправо
                 breakLabel={"..."}
                 onPageChange={handlePageClick}
                 containerClassName={"pagination"}

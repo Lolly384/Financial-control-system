@@ -4,22 +4,30 @@ import Button from '../../Button/Button';
 import FormAddTask from '../FormAddTask/FormAddTask';
 import Modal from 'react-modal';
 import FormChangeTask from '../FormChangeTask/FormChangeTask';
+import './Task.css';
+import delIcon from './free-icon-delete-1214428.png';
+import addIcon from './free-icon-add-square-outlined-interface-button-54731.png';
+import editIcon from './free-icon-edit-1159633.png';
 
 export default function Task() {
     const [data, setData] = useState([]);
-    const [modalIsOpenAdd, setModalIsOpenAdd] = useState(false); // Состояние для модального окна добавления
-    const [modalIsOpenChange, setModalIsOpenChange] = useState(false); // Состояние для модального окна изменения
-    const [currentPage, setCurrentPage] = useState(0); // текущая страница пагинации
-    const itemsPerPage = 1; // количество элементов на странице
-    const totalItems = data.length; // общее количество элементов
-    const pageCount = Math.ceil(totalItems / itemsPerPage); // количество страниц
-
+    const [modalIsOpenAdd, setModalIsOpenAdd] = useState(false);
+    const [modalIsOpenChange, setModalIsOpenChange] = useState(false);
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 1;
+    const totalItems = data.length;
+    const pageCount = Math.ceil(totalItems / itemsPerPage);
 
     const getTask = async () => {
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error('No token found');
+                return;
+            }
             const response = await fetch("/api/getTask", {
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}` // Добавляем заголовок Authorization с токеном
+                    'Authorization': `Bearer ${token}`
                 }
             });
             const fetchedData = await response.json();
@@ -47,12 +55,12 @@ export default function Task() {
 
     const closeModalAdd = () => {
         setModalIsOpenAdd(false);
-        getTask()
+        getTask();
     };
 
     const closeModalChange = () => {
         setModalIsOpenChange(false);
-        getTask()
+        getTask();
     };
 
     const handleDelete = async (task) => {
@@ -68,7 +76,6 @@ export default function Task() {
                 throw new Error('Failed to delete task');
             }
             console.log('Task deleted successfully');
-            // После удаления задачи вызываем функцию для обновления данных
             getTask();
         } catch (error) {
             console.error('Error deleting task:', error);
@@ -77,56 +84,54 @@ export default function Task() {
 
     return (
         <>
+            <div className='tasks-butGroup'>
+                <Modal isOpen={modalIsOpenAdd} onRequestClose={closeModalAdd}>
+                    <FormAddTask onCloseModal={closeModalAdd} />
+                </Modal>
+                <Button onClick={openModalAdd}><img src={addIcon} className='icon' alt='Добавить' /></Button>
+
+                <Modal isOpen={modalIsOpenChange} onRequestClose={closeModalChange}>
+                    <FormChangeTask task={data[currentPage]} onCloseModal={closeModalChange} />
+                </Modal>
+                <Button onClick={openModalChange}><img src={editIcon} className='icon' alt='Изменить' /></Button>
+                <Button onClick={() => handleDelete(data[currentPage])}><img className='icon' src={delIcon} alt='Удалить' /></Button>
+            </div>
             {data
                 .slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
                 .map((task, index) => (
-                    <>
-                        <div className='tasks-butGroup'>
-                            <Modal isOpen={modalIsOpenAdd} onRequestClose={closeModalAdd}>
-                                <FormAddTask onCloseModal={closeModalAdd}/>
-                            </Modal>
-                            <Button onClick={openModalAdd}>Добавить</Button>
-
-                            <Modal isOpen={modalIsOpenChange} onRequestClose={closeModalChange}>
-                                <FormChangeTask task={task}  onCloseModal={closeModalChange}/>
-                            </Modal>
-                            <Button onClick={openModalChange}>Изменить</Button>
-
-                            <Button key={index} onClick={() => handleDelete(task)}>Удалить</Button>
+                    <div className='tasks-task' key={index}>
+                        <h2>Задача {index}: {task.name}</h2>
+                        <div className="task-description">
+                            <h3>Описание:</h3>
+                            <p>{task.description}</p>
                         </div>
-                        <div className='tasks-task' key={index}>
-
-                            <h2>Задача {index}: {task.name}</h2>
-                            <div className="task-description">
-                                <h3>Описание:</h3>
-                                <p>{task.description}</p>
-                            </div>
-                            <div className="task-steps">
-                                <h3>Требования</h3>
-                                <ul>
-                                    <li>{task.requirements}</li>
-                                </ul>
-                            </div>
-                            <div className="additional-requirements">
-                                <h3>Дополнительные требования:</h3>
-                                <ul>
-                                    <li>{task.additionalreq}</li>
-                                </ul>
-                            </div>
+                        <div className="task-steps">
+                            <h3>Требования</h3>
+                            <ul>
+                                <li>{task.requirements}</li>
+                            </ul>
                         </div>
-                    </>
+                        <div className="additional-requirements">
+                            <h3>Дополнительные требования:</h3>
+                            <ul>
+                                <li>{task.additionalreq}</li>
+                            </ul>
+                        </div>
+                    </div>
                 ))}
             <div className='tasks-button'>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
                 <ReactPaginate
                     pageCount={pageCount}
-                    pageRangeDisplayed={5} // количество отображаемых страниц
-                    marginPagesDisplayed={1} // количество видимых страниц в начале и в конце пагинации
-                    previousLabel={"Пред."}
-                    nextLabel={"След."}
+                    pageRangeDisplayed={5}
+                    marginPagesDisplayed={1}
+                    previousLabel={<i className="fas fa-chevron-left"></i>}
+                    nextLabel={<i className="fas fa-chevron-right"></i>}
                     breakLabel={"..."}
                     onPageChange={handlePageClick}
                     containerClassName={"pagination"}
                     activeClassName={"active"}
+                    pageClassName="page-item"
                 />
             </div>
         </>

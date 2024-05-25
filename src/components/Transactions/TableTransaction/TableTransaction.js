@@ -4,6 +4,11 @@ import Button from '../../Button/Button';
 import ReactPaginate from 'react-paginate';
 import FormChangeTransaction from '../FormChangeTransaction/FormChangeTransaction';
 import Modal from 'react-modal';
+import './TableTransaction.css';
+import imgDelete from './free-icon-delete-1214428.png';
+import imgEdit from './free-icon-edit-1159633.png';
+import leftArrows from './free-icon-left-arrows-12589747.png';
+import rightArrows from './free-icon-right-arrow-318228.png';
 
 const trimDate = (longDate) => {
     const date = new Date(longDate);
@@ -18,7 +23,7 @@ export default function TableTransaction({ tableDataChanged, setTableDataChanged
     const [currentPage, setCurrentPage] = useState(0);
     const [data, setData] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState({});
-    const itemsPerPage = 5; // Количество элементов на странице
+    const itemsPerPage = 8; // Количество элементов на странице
 
     const getTransactions = async () => {
         try {
@@ -75,7 +80,7 @@ export default function TableTransaction({ tableDataChanged, setTableDataChanged
     const openModal = (index) => {
         setModalIsOpen({ ...modalIsOpen, [index]: true });
     };
-    
+
     const closeModal = () => {
         setModalIsOpen({});
     };
@@ -85,6 +90,7 @@ export default function TableTransaction({ tableDataChanged, setTableDataChanged
     const currentRows = data.slice(startItem, endItem);
 
     return (
+
         <>
             <table className='transactions-table' border="1">
                 <thead>
@@ -100,7 +106,7 @@ export default function TableTransaction({ tableDataChanged, setTableDataChanged
                         <th>Получатель</th>
                         <th>Статус</th>
                         <th>&nbsp;</th>
-                        <th>&nbsp;</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -116,24 +122,25 @@ export default function TableTransaction({ tableDataChanged, setTableDataChanged
                             <td>{row.sender}</td>
                             <td>{row.recipient}</td>
                             <td>{row.status}</td>
-                            
-                            <td><Button onClick={() => openModal(index)}>Изменить</Button></td>
-                            <Modal isOpen={modalIsOpen[index]} onRequestClose={closeModal}>
-                                <FormChangeTransaction transaction={row} onTransactionChange={handleTransactionChange}/>
-                            </Modal>
-                            {/* Передаем идентификатор транзакции в handleDelete */}
-                            <td><Button onClick={() => handleDelete(row)}>Удалить</Button></td>
+                            <td className="button-group">
+                                <Button onClick={() => openModal(index)}><img className='icon' src={imgEdit} alt='Редактировать' /></Button>
+                                <Modal isOpen={modalIsOpen[index]} onRequestClose={() => closeModal(index)}>
+                                    <FormChangeTransaction transaction={row} onTransactionChange={handleTransactionChange} />
+                                </Modal>
+                                <Button onClick={() => handleDelete(row)}><img className='icon' src={imgDelete} alt='Удалить' /></Button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
             <div className='transactions-button'>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
                 <ReactPaginate
                     pageCount={pageCount}
                     pageRangeDisplayed={5}
                     marginPagesDisplayed={1}
-                    previousLabel={"Пред."}
-                    nextLabel={"След."}
+                    previousLabel={<i className="fas fa-chevron-left"></i>} // Иконка стрелки влево
+                    nextLabel={<i className="fas fa-chevron-right"></i>} // Иконка стрелки вправо
                     breakLabel={"..."}
                     onPageChange={handlePageClick}
                     containerClassName={"pagination"}

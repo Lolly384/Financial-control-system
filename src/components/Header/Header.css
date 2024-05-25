@@ -2,8 +2,10 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: #D4D4D4;
+    background-color: #FFFFFF;
+    align-items: center;
     padding: 0 50px;
+    height: 40px;
 }
 
 .App-header-group {
@@ -17,4 +19,17 @@
     width: 336px;
     height: 30px;
     border-radius: 150px;
+}
+.header-logo{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.header_user_logo{
+    width: 25px;
+    height: 25px;
+}
+.user_avtorisovan{
+    display: flex;
+    flex-direction: row;
 }

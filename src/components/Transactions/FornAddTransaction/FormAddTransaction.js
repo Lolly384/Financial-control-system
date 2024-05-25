@@ -148,7 +148,7 @@ export default function FormAddTransaction({ onTransactionAdded, selectedAccount
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="transaction-form" onSubmit={handleSubmit}>
             <label>
                 Тип операции:
                 <select name="type" value={formData.type} onChange={handleChange} required>

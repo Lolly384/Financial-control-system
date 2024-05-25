@@ -7,6 +7,11 @@ export default function SectionGraphic() {
 
     const getTransactions = async () => {
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error('No token found');
+                return;
+            }
             const response = await fetch("/api/getTransactions", {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`

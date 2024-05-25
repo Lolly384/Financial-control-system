@@ -1,0 +1,33 @@
+.button-group {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+}
+
+.transactions-table th,
+.transactions-table td {
+
+    text-align: left;
+    border: none;
+    /* Убирает границы */
+}
+
+.transactions-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.transactions-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1rem;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+}
+

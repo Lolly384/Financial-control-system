@@ -12,3 +12,8 @@
     flex-direction: row;
     gap: 10px;
 }
+.tasks-task{
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    padding: 15px;
+}

@@ -9,6 +9,11 @@ export default function SectionTask() {
 
     const getTask = async () => {
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error('No token found');
+                return;
+            }
             const response = await fetch("/api/getTask", {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -59,18 +64,19 @@ export default function SectionTask() {
                 </ul>
             </div>
 
-            <ReactPaginate
-                pageCount={pageCount}
-                pageRangeDisplayed={1}
-                marginPagesDisplayed={1}
-                previousLabel={"Пред."}
-                nextLabel={"След."}
-                breakLabel={"..."}
-                onPageChange={handlePageClick}
-                containerClassName={"pagination"}
-                activeClassName={"active"}
-                pageClassName={"page-item"}
-            />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+                <ReactPaginate
+                    pageCount={pageCount}
+                    pageRangeDisplayed={5}
+                    marginPagesDisplayed={1}
+                    previousLabel={<i className="fas fa-chevron-left"></i>} // Иконка стрелки влево
+                    nextLabel={<i className="fas fa-chevron-right"></i>} // Иконка стрелки вправо
+                    breakLabel={"..."}
+                    onPageChange={handlePageClick}
+                    containerClassName={"pagination"}
+                    activeClassName={"active"}
+                    pageClassName="page-item"
+                />
         </section>
     );
 }

@@ -1,14 +1,83 @@
-/* form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
 }
 
-label {
-    display: flex;
-    flex-direction: column;
+.form h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+    color: #333;
 }
 
-button {
+.form div {
+    margin-bottom: 20px;
+}
+
+.form label {
+    display: block;
+    font-weight: bold;
+}
+
+.form input[type="email"],
+.form input[type="text"],
+.form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form input[type="email"]:focus,
+.form input[type="text"]:focus,
+.form input[type="password"]:focus {
+    border-color: #007bff;
+}
+
+.form button[type="submit"],
+.form button[type="button"] {
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+}
+
+.form button[type="submit"]:hover,
+.form button[type="button"]:hover {
+    background-color: #0056b3;
+}
+
+.form button[type="submit"]:focus,
+.form button[type="button"]:focus {
+    outline: none;
+    background-color: #0056b3;
+}
+
+.butGroup button {
+    display: block;
+    width: 100%;
     margin-top: 10px;
-} */
+    text-align: center;
+    color: #007bff;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.butGroup button:hover {
+    color: #fff;
+}
