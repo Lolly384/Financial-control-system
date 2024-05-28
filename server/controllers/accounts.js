@@ -6,13 +6,29 @@ module.exports = class {
 
     getAccounts = async (req, res) => {
         try {
-            const accounts = await DB.getAccounts();
+            const authHeader = req.headers.authorization;
+            if (!authHeader) {
+                return res.status(401).json({ message: 'Токен отсутствует' });
+            }
+    
+            const token = authHeader.split(' ')[1];
+            if (!token) {
+                return res.status(401).json({ message: 'Токен отсутствует' });
+            }
+    
+            const decodedToken = jwt.verify(token, process.env.JWT_SECRET || 'your_secret_key_here');
+            const { username } = decodedToken;
+    
+            const accounts = await DB.getAccounts(username);
             res.status(200).json(accounts);
         } catch (error) {
             console.error('Error fetching accounts:', error);
-            res.status(500).json({ message: 'Error fetching accounts' });
+            if (error.name === 'JsonWebTokenError') {
+                return res.status(401).json({ message: 'Некорректный токен' });
+            }
+            res.status(500).json({ message: 'Ошибка при выполнении запроса' });
         }
-    }
+    };
 
     addAccount = async (req, res) => {
         try {

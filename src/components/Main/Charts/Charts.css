@@ -1,0 +1,91 @@
+.charts-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+}
+
+.menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.menu-input {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-top: 10px;
+}
+
+.menu-input input[type="date"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.menu-input input[type="date"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+.menu-input button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+
+.grop-graphics {
+    display: flex;
+    flex-direction: row;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    width: auto;
+    height: auto;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.single-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.layout-buttons, .double-layout {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.layout-buttons img {
+    width: 30px;
+    height: 30px;
+}
+.pagination-controls{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    
+}
+.slider-layout{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

@@ -1,33 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { VictoryChart, VictoryBar, VictoryAxis, VictoryTheme } from 'victory';
-import './SectionGraphic.css';
+import './FirstChart.css'
 
-export default function SectionGraphic() {
-    const [transactions, setTransactions] = useState([]);
 
-    const getTransactions = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                console.error('No token found');
-                return;
-            }
-            const response = await fetch("/api/getTransactions", {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            const fetchedData = await response.json();
-            setTransactions(fetchedData);
-        } catch (error) {
-            console.error("Ошибка при выполнении запроса:", error);
-        }
-    };
-
-    useEffect(() => {
-        getTransactions();
-    }, []);
-
+export default function FirstChart({ transactions }) {
     // Группировка данных по типу операций и подсчет суммы для каждого типа
     const groupedData = transactions.reduce((acc, transaction) => {
         if (!acc[transaction.type]) {
@@ -44,7 +20,7 @@ export default function SectionGraphic() {
     }));
 
     return (
-        <section className="sectionGraphic">
+        <section className="sectionGraphicFirst">
             <h2>Распределение расходов по типам операций</h2>
             <VictoryChart
                 theme={VictoryTheme.material}

@@ -10,9 +10,21 @@ export default function SectionBalance() {
 
     const fetchAccounts = async () => {
         try {
-            const response = await fetch('/api/getAccounts');
-            const data = await response.json();
-            setAccounts(data);
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error('No token found');
+                return;
+            }
+            const response = await fetch('/api/getAccounts', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch accounts');
+            }
+            const accounts = await response.json();
+            setAccounts(accounts);
         } catch (error) {
             console.error('Error fetching accounts:', error);
         }

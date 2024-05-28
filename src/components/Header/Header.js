@@ -4,12 +4,13 @@ import Button from '../Button/Button';
 import AuthForm from './AuthForm/AuthForm';
 import './Header.css';
 import imgUser from './icons8-пользователь-50 (1).png';
-import imgLogo from './icons8-монеты-80.png'
-import logaut from './free-icon-logout-660350.png'
+import imgLogo from './icons8-монеты-80.png';
+import logoutIcon from './free-icon-logout-660350.png';
 
 export default function Header() {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [username, setUsername] = useState(null);
+    const [accounts, setAccounts] = useState([]);
 
     const openModal = () => {
         setModalIsOpen(true);
@@ -25,33 +26,48 @@ export default function Header() {
         closeModal(); // Закрываем модальное окно после успешной авторизации
     };
 
-    const fetchUserData = async (token) => {
+    const fetchUserData = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found');
+            return;
+        }
+
         try {
             const response = await fetch('/api/getUser', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
+
             if (!response.ok) {
                 throw new Error('Failed to fetch user data');
             }
+
             const user = await response.json();
-            setUsername(user.username);
+            setUsername(user.username); // Устанавливаем имя пользователя после успешного получения данных
         } catch (error) {
             console.error('Error fetching user data:', error);
             localStorage.removeItem('token'); // Удаляем токен при ошибке
-            openModal(); // Открываем модальное окно
+            setUsername(null); // Сбрасываем имя пользователя
+            openModal(); // Открываем модальное окно для входа
         }
     };
 
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            fetchUserData(token);
+            fetchUserData();
         } else {
             openModal(); // Открываем модальное окно, если токен отсутствует
         }
     }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token'); // Удаляем токен из localStorage
+        setUsername(null); // Устанавливаем имя пользователя в null
+        openModal(); // Открываем модальное окно авторизации
+    };
 
     return (
         <header className="App-header">
@@ -64,9 +80,11 @@ export default function Header() {
                     <>
                         <div className='user_avtorisovan'>
                             <img className='header_user_logo' src={imgUser} alt="Account Icon" />
-                                <p>{username}</p>
+                            <p>{username}</p>
                         </div>
-                        <img className='icon' src={logaut} alt='Выйти с аккаунта' />
+                        <Button onClick={handleLogout}>
+                            <img className='icon' src={logoutIcon} alt='Выйти с аккаунта' />
+                        </Button>
                     </>
                 ) : (
                     <Button onClick={openModal}>Log In</Button>

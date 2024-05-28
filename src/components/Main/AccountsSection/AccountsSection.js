@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Button from "../../Button/Button";
 import FormAddTransaction from '../../Transactions/FornAddTransaction/FormAddTransaction';
-import img from './icons8-card-100.png'
+import img from './icons8-card-100.png';
 import Modal from 'react-modal';
 import './AccountsSection.css';
 import addIcon from './free-icon-add-square-outlined-interface-button-54731.png';
@@ -11,10 +11,7 @@ export default function AccountsSection() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newAccount, setNewAccount] = useState({ name: '', balance: '' });
     const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
-    const [selectedAccount, setSelectedAccount] = useState(null);
-    const [transactionType, setTransactionType] = useState('');
     const [selectedAccountForTransaction, setSelectedAccountForTransaction] = useState(null); // Состояние для хранения выбранного счета
-
 
     const fetchAccounts = async () => {
         const token = localStorage.getItem('token');
@@ -23,7 +20,14 @@ export default function AccountsSection() {
             return;
         }
         try {
-            const response = await fetch('/api/getAccounts');
+            const response = await fetch('/api/getAccounts', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch accounts');
+            }
             const data = await response.json();
             setAccounts(data);
         } catch (error) {
@@ -40,7 +44,8 @@ export default function AccountsSection() {
             const response = await fetch('api/deleteAccount', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(row)
             });
@@ -82,11 +87,9 @@ export default function AccountsSection() {
     };
 
     const handleTransactionAdded = async () => {
-        // Закрыть модальное окно после добавления транзакции
         setIsTransactionModalOpen(false);
         // Обновить таблицу после добавления транзакции
-        // Установить флаг изменения данных таблицы
-        // setTableDataChanged(true);
+        await fetchAccounts();
     };
 
     return (
@@ -122,7 +125,7 @@ export default function AccountsSection() {
                 {accounts.map((account, index) => (
                     <div key={account.id} className="accountItem">
                         <div className='accountItem-imgAndName'>
-                            <img src={img}></img>
+                            <img src={img} alt='Account Icon' />
                             <strong><p className='accountItem-name'>{account.name}</p></strong>
                         </div>
                         <p>Баланс: {account.balance}</p>
@@ -131,15 +134,19 @@ export default function AccountsSection() {
                                 setIsTransactionModalOpen(true);
                                 setSelectedAccountForTransaction(account.name); // Передаем название счета в состояние
                             }}>Транзакция</Button>
-                            <Modal isOpen={isTransactionModalOpen} onRequestClose={() => setIsTransactionModalOpen(false)}>
-                                <FormAddTransaction onTransactionAdded={handleTransactionAdded} selectedAccount={selectedAccountForTransaction} fetchAccounts={fetchAccounts} />
-
-                            </Modal>
                             <Button onClick={() => handleDeleteAccount(account)}>Удалить</Button>
                         </div>
                     </div>
                 ))}
             </div>
+
+            <Modal isOpen={isTransactionModalOpen} onRequestClose={() => setIsTransactionModalOpen(false)}>
+                <FormAddTransaction 
+                    onTransactionAdded={handleTransactionAdded} 
+                    selectedAccount={selectedAccountForTransaction} 
+                    fetchAccounts={fetchAccounts} 
+                />
+            </Modal>
         </div>
     );
 }

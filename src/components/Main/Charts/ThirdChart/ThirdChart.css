@@ -1,0 +1,13 @@
+.sectionGraphicThird {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    width: auto;
+    height: auto;
+    padding: 20px;
+    background-color: #fff;
+}
+
+

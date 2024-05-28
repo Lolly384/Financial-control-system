@@ -23,7 +23,7 @@ export default function SectionTransaction() {
             return;
         }
         try {
-            const response = await fetch("/api/getTransactions", {
+            const response = await fetch("/api/getTransactionsCurrentMonth  ", {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -50,7 +50,7 @@ export default function SectionTransaction() {
     return (
         <section className='sectionTransaction'>
             <div>
-                <strong><p className='header-name'>Список транзакций</p></strong>
+                <strong><p className='header-name'>Список транзакций за месяц</p></strong>
 
                 {currentTransactions.map((transaction) => (
                     <div key={transaction.id} className="transaction-item">

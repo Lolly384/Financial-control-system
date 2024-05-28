@@ -1,6 +1,8 @@
 const { Pool } = require('pg');
 const jwt = require('jsonwebtoken');
 
+
+
 module.exports = class {
   pool;
 
@@ -36,6 +38,38 @@ module.exports = class {
       throw error;
     }
   };
+  getTransactionsCurrentMonth = async (username, startDate, endDate) => {
+    try {
+      // Выполняем запрос к базе данных для получения транзакций пользователя за заданный период
+      const result = await this.pool.query(`
+            SELECT * FROM transactions 
+            WHERE username = $1 
+            AND date >= $2
+            AND date <= $3;
+        `, [username, startDate, endDate]);
+      return result.rows;
+    } catch (error) {
+      console.error('Ошибка при выполнении запроса:', error);
+      throw error;
+    }
+  };
+
+  getTransactionsDate = async (username, startDate, endDate) => {
+    try {
+      console.log('Querying database with:', username, startDate, endDate); // Логируем параметры запроса
+      const result = await this.pool.query(`
+            SELECT * FROM transactions 
+            WHERE username = $1 
+            AND date >= $2
+            AND date <= $3;
+        `, [username, startDate, endDate]);
+      return result.rows;
+    } catch (error) {
+      console.error('Ошибка при выполнении запроса:', error);
+      throw error;
+    }
+  };
+
   getTask = async (username) => {
     try {
       // Выполнение запроса к базе данных для получения данных из таблицы transactions
@@ -45,7 +79,7 @@ module.exports = class {
       console.error('Ошибка при выполнении запроса:', error);
       throw error; // Пробрасываем ошибку, чтобы обработать её в вызывающем коде
     }
-  }
+  };
 
   // Add
   addTransaction = async (type, sum, date, category, description, recipient, sender, status, accounts, username) => {
@@ -206,9 +240,9 @@ module.exports = class {
   };
 
 
-  getAccounts = async () => {
+  getAccounts = async (username) => {
     try {
-      const result = await this.pool.query('SELECT * FROM accounts');
+      const result = await this.pool.query('SELECT * FROM accounts WHERE username = $1', [username]);
       return result.rows;
     } catch (error) {
       console.error('Error fetching accounts:', error);

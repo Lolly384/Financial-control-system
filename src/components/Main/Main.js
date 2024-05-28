@@ -1,7 +1,7 @@
 import './Main.css'
 import Button from '../Button/Button'
 import SectionBalance from './SectionBalance/SectionBalance'
-import SectionGraphic from '../SectionGraphic/SectionGraphic'
+import SectionGraphic from './SectionGraphic/SectionGraphic'
 import Transactions from '../Transactions/Transactions'
 import Calculators from '../SectionCalculators/SectionCalculators'
 import Tasks from '../Tasks/Tasks'
@@ -10,12 +10,14 @@ import { useState, useEffect } from 'react'
 import AccountsSection from './AccountsSection/AccountsSection'
 import SectionTransactuin from './SectionTransaction/SectionTransaction'
 import SectionTask from './SectionTask/SectionTask'
+import SectionStatistic from './SectionStatistic/SectionStatistic'
+import Charts from './Charts/Charts'
 
 
 export default function Main() {
 
     const [contentType, setContentType] = useState('Обзор');
-    let menuArr = ['Обзор', 'Счета', 'Транзакции', 'Задачи', 'Бюджетирование', 'Калькуляторы', 'Отчёты']
+    let menuArr = ['Обзор', 'Счета', 'Транзакции', 'Задачи', 'Графики', 'Калькуляторы', 'Отчёты']
 
 
     function handleClick(type) {
@@ -39,8 +41,9 @@ export default function Main() {
                     <>
                         <Now contentType={contentType}></Now>
                         <div className='App-main-contents-sectionGroup'>
-                            <div className='testGroup'>
+                            <div className='Group-monyBaner'>
                                 <SectionBalance />
+                                <SectionStatistic />
                             </div>
                             <SectionTransactuin />
                             <SectionTask />
@@ -70,9 +73,10 @@ export default function Main() {
                     </>
                 )}
 
-                {contentType === 'Бюджетирование' && (
+                {contentType === 'Графики' && (
                     <>
                         <Now contentType={contentType}></Now>
+                        <Charts />
                     </>
                 )}
 

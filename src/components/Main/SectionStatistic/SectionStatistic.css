@@ -1,0 +1,32 @@
+.sectionStatistic {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.statistics-section {
+    background: #ffffff;
+    max-width: 500px;
+    width: 100%;
+}
+
+.statistics-section h3 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.statistics-section p {
+    font-size: 1.2em;
+    margin: 10px 0;
+    color: #666;
+}
+
+.statistics-section p span {
+    font-weight: bold;
+    color: #000;
+}

@@ -14,6 +14,17 @@
     gap: 30px;
     align-items: center;
 }
+.App-header-group button{
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+}
+
+.App-header-group button:hover{
+    cursor: pointer;
+}
 
 .App-header-group input {
     width: 336px;
