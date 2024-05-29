@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const TransactionsClass = require("../controllers/transactions");
-const { getTransactions, getTransactionsCurrentMonth, getTransactionsDate, addTransaction, deleteTransaction, changeTransaction } = new TransactionsClass();
+const { getTransactions, getTransactionsCurrentMonth, getTransactionsProgress, getTransactionsDate, addTransaction, deleteTransaction, changeTransaction } = new TransactionsClass();
 
 const TaskClass = require("../controllers/task");
 const { getTask, addTask, deleteTask, changeTask } = new TaskClass();
@@ -21,9 +21,12 @@ router.get('/test', (req, res) => {
 router.get("/getTransactions", getTransactions)
 router.get("/getTransactionsCurrentMonth", getTransactionsCurrentMonth)
 router.get("/getTransactionsDate", getTransactionsDate)
+router.post("/getTransactionsProgress", getTransactionsProgress)
 router.post("/addTransaction", addTransaction)
 router.post("/deleteTransaction", deleteTransaction)
 router.post("/changeTransaction", changeTransaction)
+
+
 
 router.get("/getTask", getTask)
 router.post("/addTask", addTask)

@@ -70,10 +70,27 @@ module.exports = class {
     }
   };
 
+  getTransactionsProgress = async (username, accounts, startDate, endDate) => {
+    try {
+      const result = await this.pool.query(`
+        SELECT * FROM transactions 
+        WHERE username = $1 
+        AND account = $2
+        AND date >= $3
+        AND date <= $4;
+    `, [username, accounts, startDate, endDate]);
+
+      return result.rows;
+    } catch (error) {
+      console.error('Ошибка при выполнении запроса:', error);
+      throw error;
+    }
+  };
+
   getTask = async (username) => {
     try {
       // Выполнение запроса к базе данных для получения данных из таблицы transactions
-      const result = await this.pool.query('SELECT * FROM task WHERE username = $1', [username]);
+      const result = await this.pool.query('SELECT * FROM tasks WHERE username = $1', [username]);
       return result.rows; // Возвращаем массив объектов с данными из таблицы
     } catch (error) {
       console.error('Ошибка при выполнении запроса:', error);
@@ -82,32 +99,32 @@ module.exports = class {
   };
 
   // Add
-  addTransaction = async (type, sum, date, category, description, recipient, sender, status, accounts, username) => {
+  addTransaction = async (type, sum, date, category, description, recipient, sender, status, accountName, username) => {
     try {
-      const queryString = `INSERT INTO transactions (type, sum, date, category, description, recipient, sender, status, accounts, username) 
-                            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-                            RETURNING *`;
-      const values = [type, sum, date, category, description, recipient, sender, status, accounts, username];
+        const queryString = `
+            INSERT INTO transactions (type, sum, date, category, description, recipient, sender, status, accounts, username) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+            RETURNING *`;
+        const values = [type, sum, date, category, description, recipient, sender, status, accountName, username];
 
-      const result = await this.pool.query(queryString, values);
-      return result.rows[0];
+        const result = await this.pool.query(queryString, values);
+        return result.rows[0];
     } catch (error) {
-      console.error('Error adding transaction to DB:', error);
-      throw error;
+        console.error('Error adding transaction to DB:', error);
+        throw error;
     }
-  };
+};
 
-  addTask = async (name, description, requirements, additionalreq, username) => {
-    try {
-      const result = await this.pool.query(
-        'INSERT INTO task (name, description, requirements, additionalreq, username) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-        [name, description, requirements, additionalreq, username]
-      );
-      return result.rows[0];
-    } catch (error) {
-      console.error('Ошибка при добавлении задачи:', error);
-      throw error;
-    }
+  addTask = async (name, type, account, description, amount, progress, createdAt, username) => {
+    const query = `
+        INSERT INTO tasks (name, type, account, description, amount, progress, created_at, username)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        RETURNING *;
+    `;
+    const values = [name, type, account, description, amount, progress, createdAt, username];
+
+    const { rows } = await this.pool.query(query, values);
+    return rows[0];
   };
 
 
@@ -134,7 +151,7 @@ module.exports = class {
 
   deleteTask = async (id) => {
     try {
-      const queryString = "DELETE FROM task WHERE id = $1";
+      const queryString = "DELETE FROM tasks WHERE id = $1";
       const values = [id];
       const result = await this.pool.query(queryString, values);
 

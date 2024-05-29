@@ -7,8 +7,6 @@ import Modal from 'react-modal';
 import './TableTransaction.css';
 import imgDelete from './free-icon-delete-1214428.png';
 import imgEdit from './free-icon-edit-1159633.png';
-import leftArrows from './free-icon-left-arrows-12589747.png';
-import rightArrows from './free-icon-right-arrow-318228.png';
 
 const trimDate = (longDate) => {
     const date = new Date(longDate);
@@ -17,7 +15,7 @@ const trimDate = (longDate) => {
     const year = date.getFullYear();
     const formattedDate = `${day}-${month}-${year}`;
     return formattedDate;
-}
+};
 
 export default function TableTransaction({ tableDataChanged, setTableDataChanged }) {
     const [currentPage, setCurrentPage] = useState(0);
@@ -29,11 +27,16 @@ export default function TableTransaction({ tableDataChanged, setTableDataChanged
         try {
             const response = await fetch("/api/getTransactions", {
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}` // Добавляем заголовок Authorization с токеном
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
             const fetchedData = await response.json();
-            setData(fetchedData);
+            if (Array.isArray(fetchedData)) {
+                setData(fetchedData);
+            } else {
+                console.error("Fetched data is not an array:", fetchedData);
+                setData([]);
+            }
         } catch (error) {
             console.error("Ошибка при выполнении запроса:", error);
         }
@@ -54,7 +57,8 @@ export default function TableTransaction({ tableDataChanged, setTableDataChanged
             const response = await fetch('api/deleteTransaction', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(row)
             });
@@ -87,10 +91,9 @@ export default function TableTransaction({ tableDataChanged, setTableDataChanged
 
     const startItem = currentPage * itemsPerPage;
     const endItem = (currentPage + 1) * itemsPerPage;
-    const currentRows = data.slice(startItem, endItem);
+    const currentRows = Array.isArray(data) ? data.slice(startItem, endItem) : [];
 
     return (
-
         <>
             <table className='transactions-table' border="1">
                 <thead>
@@ -106,7 +109,6 @@ export default function TableTransaction({ tableDataChanged, setTableDataChanged
                         <th>Получатель</th>
                         <th>Статус</th>
                         <th>&nbsp;</th>
-
                     </tr>
                 </thead>
                 <tbody>
@@ -124,7 +126,7 @@ export default function TableTransaction({ tableDataChanged, setTableDataChanged
                             <td>{row.status}</td>
                             <td className="button-group">
                                 <Button onClick={() => openModal(index)}><img className='icon' src={imgEdit} alt='Редактировать' /></Button>
-                                <Modal isOpen={modalIsOpen[index]} onRequestClose={() => closeModal(index)}>
+                                <Modal isOpen={modalIsOpen[index]} onRequestClose={closeModal}>
                                     <FormChangeTransaction transaction={row} onTransactionChange={handleTransactionChange} />
                                 </Modal>
                                 <Button onClick={() => handleDelete(row)}><img className='icon' src={imgDelete} alt='Удалить' /></Button>
@@ -149,5 +151,5 @@ export default function TableTransaction({ tableDataChanged, setTableDataChanged
                 />
             </div>
         </>
-    )
+    );
 }

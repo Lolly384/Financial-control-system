@@ -72,7 +72,7 @@ export default function FormAddTransaction({ onTransactionAdded, selectedAccount
                 const errorData = await response.json();
                 console.error('Ошибка при обновлении баланса:', errorData.message);
                 throw new Error('Ошибка при обновлении баланса');
-            }else if(response.ok){
+            } else if (response.ok) {
                 fetchAccounts();
             }
         } catch (error) {
@@ -109,7 +109,8 @@ export default function FormAddTransaction({ onTransactionAdded, selectedAccount
                 }
                 await onTransactionAdded();
             } else {
-                console.error('Error adding transaction');
+                const errorData = await response.json();
+                console.error('Error adding transaction:', errorData.message);
             }
         } catch (error) {
             console.error('Error adding transaction:', error);
@@ -244,3 +245,4 @@ export default function FormAddTransaction({ onTransactionAdded, selectedAccount
         </form>
     );
 }
+

@@ -23,13 +23,17 @@ export default function SectionTransaction() {
             return;
         }
         try {
-            const response = await fetch("/api/getTransactionsCurrentMonth  ", {
+            const response = await fetch("/api/getTransactionsCurrentMonth", {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
             const fetchedData = await response.json();
-            setData(fetchedData);
+            if (Array.isArray(fetchedData)) {
+                setData(fetchedData);
+            } else {
+                console.error("Fetched data is not an array:", fetchedData);
+            }
         } catch (error) {
             console.error("Ошибка при выполнении запроса:", error);
         }
@@ -40,8 +44,8 @@ export default function SectionTransaction() {
     }, []);
 
     const offset = currentPage * transactionsPerPage;
-    const currentTransactions = data.slice(offset, offset + transactionsPerPage);
-    const pageCount = Math.ceil(data.length / transactionsPerPage);
+    const currentTransactions = Array.isArray(data) ? data.slice(offset, offset + transactionsPerPage) : [];
+    const pageCount = Array.isArray(data) ? Math.ceil(data.length / transactionsPerPage) : 0;
 
     const handlePageClick = ({ selected }) => {
         setCurrentPage(selected);

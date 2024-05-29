@@ -5,6 +5,7 @@ import img from './icons8-card-100.png';
 import Modal from 'react-modal';
 import './AccountsSection.css';
 import addIcon from './free-icon-add-square-outlined-interface-button-54731.png';
+import iconPDF from './icons8-pdf-50.png';
 
 export default function AccountsSection() {
     const [accounts, setAccounts] = useState([]);
@@ -96,6 +97,7 @@ export default function AccountsSection() {
         <div className="accountsSection">
             <div className="accountsSection-butMenu">
                 <Button onClick={() => setIsModalOpen(true)}><img className='icon' src={addIcon} alt='Создать' /></Button>
+                {/* <Button ><img className='icon' src={iconPDF} alt='PDF' /></Button> */}
             </div>
             {isModalOpen && (
                 <div className="modal-overlay">

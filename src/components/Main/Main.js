@@ -12,12 +12,13 @@ import SectionTransactuin from './SectionTransaction/SectionTransaction'
 import SectionTask from './SectionTask/SectionTask'
 import SectionStatistic from './SectionStatistic/SectionStatistic'
 import Charts from './Charts/Charts'
+import DocSection from './DocSection/DocSection'
 
 
 export default function Main() {
 
     const [contentType, setContentType] = useState('Обзор');
-    let menuArr = ['Обзор', 'Счета', 'Транзакции', 'Задачи', 'Графики', 'Калькуляторы', 'Отчёты']
+    let menuArr = ['Обзор', 'Счета', 'Транзакции', 'Задачи', 'Графики']
 
 
     function handleClick(type) {
@@ -80,17 +81,18 @@ export default function Main() {
                     </>
                 )}
 
-                {contentType === 'Калькуляторы' && (
+                {/* {contentType === 'Калькуляторы' && (
                     <>
                         <Calculators />
                     </>
-                )}
+                )} */}
 
-                {contentType === 'Отчёты' && (
+                {/* {contentType === 'Отчёты' && (
                     <>
                         <Now contentType={contentType}></Now>
+                        <DocSection />
                     </>
-                )}
+                )} */}
 
             </section>
         </main>

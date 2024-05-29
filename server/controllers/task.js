@@ -25,16 +25,32 @@ module.exports = class {
         try {
             const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
             if (!token) {
-                throw new Error('Токен отсутствует');
+                return res.status(401).json({ message: 'Токен отсутствует' });
             }
-
+    
             const decodedToken = jwt.verify(token, process.env.JWT_SECRET || 'your_secret_key_here');
             const { username } = decodedToken;
-
-            const { name, description, requirements, additionalreq } = req.body;
-
-            const task = await DB.addTask(name, description, requirements, additionalreq, username,);
-
+    
+            // Получаем данные задачи из тела запроса
+            const { name, type, account, description, amount } = req.body;
+    
+            if (!name || !type || !account || !description || !amount) {
+                return res.status(400).json({ message: 'Пожалуйста, заполните все обязательные поля' });
+            }
+    
+            const createdAt = new Date().toISOString().slice(0, 10); // Форматируем дату как YYYY-MM-DD
+            const progress = 0.00; // Начальное значение прогресса
+    
+            // Проверяем типы данных
+            const parsedAmount = parseFloat(amount);
+            if (isNaN(parsedAmount)) {
+                return res.status(400).json({ message: 'Amount должен быть числом' });
+            }
+    
+            // Вызываем метод addTask из вашего модуля DB, передавая ему данные задачи
+            const task = await DB.addTask(name, type, account, description, parsedAmount, progress, createdAt, username);
+    
+            // Отправляем успешный результат клиенту
             res.status(200).json(task);
         } catch (error) {
             console.error('Error adding task:', error);

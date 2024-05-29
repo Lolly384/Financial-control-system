@@ -1,7 +1,10 @@
 /* FormAddTask.css */
 .form-content {
     max-width: 500px;
-    margin: 20px auto;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
 }
 
 .form-content h2 {
@@ -20,7 +23,8 @@
 }
 
 .form-content input,
-.form-content textarea {
+.form-content textarea,
+.form-content select {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
@@ -34,7 +38,8 @@
 }
 
 .form-content input:focus,
-.form-content textarea:focus {
+.form-content textarea:focus,
+.form-content select:focus {
     border-color: #007bff;
 }
 
@@ -43,12 +48,12 @@
     height: 100px;
 }
 
-.form-content div {
+.form-button-group {
     display: flex;
     justify-content: space-between;
 }
 
-.form-button-group button{
+.form-button-group button {
     padding: 10px 20px;
     background-color: #007bff;
     color: white;
@@ -57,13 +62,15 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     font-size: 16px;
+    width: 48%;
+    box-sizing: border-box;
 }
 
-.modal-button:hover {
+.form-button-group button:hover {
     background-color: #0056b3;
 }
 
-.modal-button:focus {
+.form-button-group button:focus {
     outline: none;
     background-color: #0056b3;
 }

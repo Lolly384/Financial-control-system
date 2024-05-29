@@ -55,18 +55,18 @@ module.exports = class {
             if (!token) {
                 throw new Error('Токен отсутствует');
             }
-    
+
             const decodedToken = jwt.verify(token, process.env.JWT_SECRET || 'your_secret_key_here'); // Декодируем токен
             const { username } = decodedToken; // Получаем имя пользователя из декодированного токена
-    
+
             if (!username || !req.query.startDate || !req.query.endDate) {
                 throw new Error('Отсутствуют обязательные параметры запроса');
             }
-    
+
             const { startDate, endDate } = req.query; // Получаем данные транзакции из параметров строки запроса
-    
+
             console.log('Received dates:', startDate, endDate); // Логируем полученные даты
-    
+
             // Выполняем запрос к базе данных для получения транзакций пользователя за указанный период
             const transactions = await DB.getTransactionsDate(username, startDate, endDate);
             res.status(200).json(transactions);
@@ -75,35 +75,59 @@ module.exports = class {
             res.status(500).json({ error: 'Ошибка при выполнении запроса controller' });
         }
     }
+    getTransactionsProgress = async (req, res) => {
+        try {
+            const token = req.headers.authorization && req.headers.authorization.split(' ')[1]; // Получаем токен из заголовка запроса
+            if (!token) {
+                throw new Error('Токен отсутствует');
+            }
     
+            const decodedToken = jwt.verify(token, process.env.JWT_SECRET || 'your_secret_key_here'); // Декодируем токен
+            const { username } = decodedToken; // Получаем имя пользователя из декодированного токена
+    
+            if (!username || !req.query.startDate || !req.query.endDate || !req.query.account) {
+                throw new Error('Отсутствуют обязательные параметры запроса');
+            }
+    
+            const { startDate, endDate, account } = req.query; // Получаем параметры из строки запроса
+    
+            // Выполняем запрос к базе данных для получения транзакций пользователя за указанный период и с указанным счётом
+            const transactions = await DB.getTransactionsProgress(username, startDate, endDate, account);
+            res.status(200).json(transactions);
+        } catch (error) {
+            console.error('Ошибка при выполнении запроса controller:', error);
+            res.status(500).json({ error: 'Ошибка при выполнении запроса controller' });
+        }
+    };
 
 
     addTransaction = async (req, res) => {
         try {
             const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
             if (!token) {
-                throw new Error('Токен отсутствует');
+                return res.status(401).json({ message: 'Токен отсутствует' });
             }
-
+    
             const decodedToken = jwt.verify(token, process.env.JWT_SECRET || 'your_secret_key_here');
             const { username } = decodedToken;
-            // Получаем данные транзакции из тела запроса
-            const { type, sum, date, category, description, recipient, sender, status, accounts } = req.body;
-
-            // Парсим дату из клиента в формат Date()
+    
+            const { type, sum, date, category, description, recipient, sender, status, accountName } = req.body;
+    
+            if (!type || !sum || !date || !category || !status || !accountName) {
+                return res.status(400).json({ message: 'Обязательные поля отсутствуют' });
+            }
+    
             const dateParts = date.split('-');
-            const formattedDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]); // -1 потому что в JavaScript месяцы начинаются с 0
-
-            // Вызываем метод addTransaction из вашего модуля DB, передавая ему данные транзакции
-            const transaction = await DB.addTransaction(type, sum, formattedDate, category, description, recipient, sender, status, accounts, username);
-
-            // Отправляем успешный результат клиенту
+            const formattedDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+    
+            const transaction = await DB.addTransaction(type, sum, formattedDate, category, description, recipient, sender, status, accountName, username);
+    
             res.status(200).json(transaction);
         } catch (error) {
             console.error('Error adding transaction:', error);
-            res.status(500).json({ message: 'Error adding transaction' });
+            res.status(500).json({ message: 'Ошибка при добавлении транзакции' });
         }
-    }
+    };
 
     deleteTransaction = async (req, res) => {
 
