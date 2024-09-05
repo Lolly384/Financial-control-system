@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: #FFFFFF;
+    background-color: #222;
     align-items: center;
     padding: 0 50px;
     height: 40px;
@@ -15,7 +15,7 @@
     align-items: center;
 }
 .App-header-group button{
-    background-color: #FFFFFF;
+    background-color: #222;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -39,8 +39,19 @@
 .header_user_logo{
     width: 25px;
     height: 25px;
+    filter: invert(1);
 }
 .user_avtorisovan{
     display: flex;
     flex-direction: row;
+}
+
+@media (max-width: 768px){
+
+    .App-header{
+        padding: 0 10px;
+    }
+    .App-header-group{
+        gap: 5px;
+    }
 }

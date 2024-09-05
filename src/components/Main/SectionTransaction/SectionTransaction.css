@@ -1,5 +1,5 @@
 .sectionTransaction {
-    background: #fff;
+    background: #333;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -14,11 +14,12 @@
     display: flex;
     align-items: center;
     font-size: 1.4em;
+    
 }
 
 .header-name {
     font-size: 24px;
-    color: #333;
+    color: #fff;
     margin-bottom: 20px;
     text-align: center;
 }
@@ -27,8 +28,8 @@
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background-color: #333;
+    border: 1px solid #444;
     border-radius: 4px;
     margin-bottom: 10px;
     transition: background-color 0.3s ease;
@@ -60,9 +61,9 @@
 
 .page-item a {
     padding: 8px 12px;
-    border: 1px solid #ddd;
+    border: 1px solid #333;
     border-radius: 4px;
-    color: #333;
+    color: #fff;
     text-decoration: none;
 }
 
@@ -73,5 +74,17 @@
 .active a {
     background-color: #007bff;
     color: #fff;
-    border-color: #007bff;
+    border-color: #fff;
+}
+
+
+@media (max-width: 768px){
+
+    .sectionTransaction{
+        width: auto;
+    }
+    .header-name{
+        font-size: 20px;
+    }
+
 }

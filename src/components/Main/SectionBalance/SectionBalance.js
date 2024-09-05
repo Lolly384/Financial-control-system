@@ -52,7 +52,7 @@ export default function SectionBalance() {
                             <img src={img} alt="Account Icon" />
                             <strong><p>{account.name}</p></strong>
                         </div>
-                        <p>Баланс: {account.balance}</p>
+                        <p>Баланс: {account.balance} ₽</p>
                     </div>
                 ))}
             </div>

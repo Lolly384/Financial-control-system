@@ -22,12 +22,12 @@ export default function SecondChart({ accounts }) {
                     width={600}
                     height={600}
                     padding={50}
-                    innerRadius={70}
+                    innerRadius={40}
                     data={chartData}
-                    colorScale={["#EF5350", "#FFA726", "#FFEE58", "#66BB6A", "#29B6F6", "#AB47BC", "#EC407A", "#FFCA28", "#9CCC65", "#42A5F5"]} // Изменяем палитру цветов
-                    labels={({ datum }) => `${datum.x}: ${datum.y}`}
-                    labelRadius={100}
-                    style={{ labels: { fontSize: 25, fill: 'Black' } }}
+                    colorScale={["#008000", "#FF6347", "#330066", "#663300" ]} // Изменяем палитру цветов
+                    labels={({ datum }) => `${datum.x}: ${datum.y} ₽`}
+                    labelRadius={50}
+                    style={{ labels: { fontSize: 25, fill: 'white' } }}
                 />
             </svg>
         </div>

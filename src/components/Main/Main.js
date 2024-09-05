@@ -80,20 +80,6 @@ export default function Main() {
                         <Charts />
                     </>
                 )}
-
-                {/* {contentType === 'Калькуляторы' && (
-                    <>
-                        <Calculators />
-                    </>
-                )} */}
-
-                {/* {contentType === 'Отчёты' && (
-                    <>
-                        <Now contentType={contentType}></Now>
-                        <DocSection />
-                    </>
-                )} */}
-
             </section>
         </main>
     )

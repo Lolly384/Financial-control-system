@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+import { jwtDecode } from 'jwt-decode'; // Изменено импортирование jwtDecode
 import Button from '../Button/Button';
 import AuthForm from './AuthForm/AuthForm';
 import './Header.css';
@@ -10,7 +11,6 @@ import logoutIcon from './free-icon-logout-660350.png';
 export default function Header() {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [username, setUsername] = useState(null);
-    const [accounts, setAccounts] = useState([]);
 
     const openModal = () => {
         setModalIsOpen(true);
@@ -20,44 +20,18 @@ export default function Header() {
         setModalIsOpen(false);
     };
 
-    const handleLogin = async (token, user) => {
+    const handleLogin = async (token) => {
         localStorage.setItem('token', token); // Сохраняем токен в localStorage
-        setUsername(user.username); // Устанавливаем имя пользователя
+        const decodedToken = jwtDecode(token);
+        setUsername(decodedToken.username); // Устанавливаем имя пользователя из токена
         closeModal(); // Закрываем модальное окно после успешной авторизации
-    };
-
-    const fetchUserData = async () => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            console.error('No token found');
-            return;
-        }
-
-        try {
-            const response = await fetch('/api/getUser', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch user data');
-            }
-
-            const user = await response.json();
-            setUsername(user.username); // Устанавливаем имя пользователя после успешного получения данных
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-            localStorage.removeItem('token'); // Удаляем токен при ошибке
-            setUsername(null); // Сбрасываем имя пользователя
-            openModal(); // Открываем модальное окно для входа
-        }
     };
 
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            fetchUserData();
+            const decodedToken = jwtDecode(token);
+            setUsername(decodedToken.username); // Устанавливаем имя пользователя из токена
         } else {
             openModal(); // Открываем модальное окно, если токен отсутствует
         }
@@ -66,7 +40,7 @@ export default function Header() {
     const handleLogout = () => {
         localStorage.removeItem('token'); // Удаляем токен из localStorage
         setUsername(null); // Устанавливаем имя пользователя в null
-        openModal(); // Открываем модальное окно авторизации
+        window.location.reload();
     };
 
     return (

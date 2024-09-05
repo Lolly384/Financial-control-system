@@ -4,6 +4,9 @@ import './SectionGraphic.css';
 
 export default function SectionGraphic() {
     const [transactions, setTransactions] = useState([]);
+    
+
+    
 
     const getTransactions = async () => {
         try {
@@ -18,7 +21,12 @@ export default function SectionGraphic() {
                 }
             });
             const fetchedData = await response.json();
-            setTransactions(fetchedData);
+            if (Array.isArray(fetchedData)) {
+                setTransactions(fetchedData);
+            } else {
+                console.error("Fetched data is not an array:", fetchedData);
+                setTransactions([]);
+            }
         } catch (error) {
             console.error("Ошибка при выполнении запроса:", error);
         }
@@ -46,32 +54,35 @@ export default function SectionGraphic() {
     return (
         <section className="sectionGraphic">
             <h2>Распределение расходов по типам операций</h2>
-            <VictoryChart
-                theme={VictoryTheme.material}
-                domainPadding={20}
-                width={1500} // Ширина графика
-                height={400} // Высота графика
-                className="victory-container"
-            >
-                <VictoryAxis
-                    style={{ tickLabels: { angle: -25, fontSize: 10, padding: 15 } }} // Поворот меток оси X для лучшей читаемости
-                />
-                <VictoryAxis
-                    dependentAxis
-                    style={{ tickLabels: { angle: -45, fontSize: 10 } }} // Поворот меток оси X для лучшей читаемости
-                    tickFormat={(x) => `${x} руб.`}
-                />
-                <VictoryBar
-                    style={{
-                        data: { fill: "#c43a31" }
-                    }}
-                    data={chartData}
-                    x="x"
-                    y="y"
-                    labels={({ datum }) => `${datum.y.toFixed(2)} руб.`}
-                    barWidth={20}
-                />
-            </VictoryChart>
+            <div className="victory-container">
+                <VictoryChart
+                    theme={VictoryTheme.material}
+                    domainPadding={20}
+                    width={1500} // Ширина графика
+                    height={400} // Высота графика
+                    
+                >
+                    <VictoryAxis
+                        style={{ tickLabels: { angle: -25, fontSize: 10, padding: 15, fill: "white" } }}
+                    />
+                    <VictoryAxis
+                        dependentAxis
+                        style={{ tickLabels: { angle: -45, fontSize: 10, fill: "white" }, axisLabel: { fill: "white" } }}
+                        tickFormat={(x) => `${x} ₽`}
+                    />
+                    <VictoryBar
+                        style={{
+                            data: { fill: "#c43a31" },
+                            labels: { fill: "white" }
+                        }}
+                        data={chartData}
+                        x="x"
+                        y="y"
+                        labels={({ datum }) => `${datum.y.toFixed(2)} ₽`}
+                        barWidth={20}
+                    />
+                </VictoryChart>
+            </div>
         </section>
     );
 }

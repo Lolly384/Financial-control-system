@@ -60,7 +60,7 @@ export default function SectionTransaction() {
                     <div key={transaction.id} className="transaction-item">
                         <span className="transaction-date">{trimDate(transaction.date)}</span> |
                         <span className="transaction-type"> {transaction.type}</span> |
-                        <span className="transaction-sum"> {transaction.sum} $</span>
+                        <span className="transaction-sum"> {transaction.sum} ₽</span>
                     </div>
                 ))}
             </div>

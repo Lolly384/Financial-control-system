@@ -1,4 +1,6 @@
-
+html {
+  background-color: #141414;
+}
 
 body {
   margin: 0;
@@ -8,28 +10,59 @@ body {
 .App {
   display: flex;
   flex-direction: column;
-  background-color: #EDEEF0;
+  background-color: #141414;
 }
 
 
 body {
   font-family: 'Arial', sans-serif;
-  color: #333; /* Основной цвет текста */
-  line-height: 1.6; /* Высота строки для лучшей читаемости */
+  color: #ffffff;
+  /* Основной цвет текста */
+  /* line-height: 1.6; Высота строки для лучшей читаемости */
   margin: 0;
   padding: 0;
-  
+
+}
+
+p {
+  color: #fff;
+}
+
+.icon {
+  filter: invert(1);
 }
 
 /* Стили для заголовков */
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 700; /* Полужирный шрифт для заголовков */
-  color: #333; /* Цвет текста заголовков */
-  margin-top: 20px; /* Отступ сверху */
-  margin-bottom: 10px; /* Отступ снизу */
-  line-height: 1.2; /* Высота строки для заголовков */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  /* Полужирный шрифт для заголовков */
+  color: #fff;
+  /* Цвет текста заголовков */
+  margin-top: 20px;
+  /* Отступ сверху */
+  margin-bottom: 10px;
+  /* Отступ снизу */
+  line-height: 1.2;
+  /* Высота строки для заголовков */
 }
 
 
 
 
+@media (max-width: 768px) {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 20px;
+  }
+
+}

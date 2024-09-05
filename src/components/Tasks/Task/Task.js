@@ -161,8 +161,8 @@ export default function Task() {
             // Обновляем прогресс в progressMap
             setProgressMap(prevProgressMap => ({
                 ...prevProgressMap,
-                [`${task.id}_income`]: incomeProgress,
-                [`${task.id}_expense`]: expenseProgress
+                [`${task.id}_income`]: { progress: incomeProgress, total: totalIncomeAmount },
+                [`${task.id}_expense`]: { progress: expenseProgress, total: totalExpenseAmount }
             }));
         } catch (error) {
             console.error('Error calculating progress:', error);
@@ -191,12 +191,13 @@ export default function Task() {
             {data
                 .slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
                 .map((task, index) => {
-                    const incomeProgress = progressMap[`${task.id}_income`] || 0;
-                    const expenseProgress = progressMap[`${task.id}_expense`] || 0;
-                    const progress = task.type === 'Накопить' ? incomeProgress : expenseProgress;
-                    const isCompleted = progress >= 100;
+                    const defaultProgressData = { progress: 0, total: 0 };
+                    const incomeData = progressMap[`${task.id}_income`] || defaultProgressData;
+                    const expenseData = progressMap[`${task.id}_expense`] || defaultProgressData;
+                    const progressData = task.type === 'Накопить' ? incomeData : expenseData;
+                    const isCompleted = progressData.progress >= 100;
                     const taskClass = isCompleted ? 'task-completed' : '';
-                    console.log(`Task ${task.id} Progress:`, progress);
+                    console.log(`Task ${task.id} Progress:`, progressData.progress);
                     return (
                         <div className={`tasks-task ${taskClass}`} key={task.id}>
                             <h2>Задача {index + 1}: {task.name}</h2>
@@ -214,7 +215,7 @@ export default function Task() {
                             </div>
                             <div className="task-amount">
                                 <h3>Сумма:</h3>
-                                <p>{task.amount}</p>
+                                <p>{task.amount} ₽ | {progressData.total.toFixed(2)} ₽ </p>
                             </div>
                             <div className="task-created-at">
                                 <h3>Создано:</h3>
@@ -224,13 +225,14 @@ export default function Task() {
                             {/* Render progress */}
                             <div className="task-progress">
                                 <h3>Прогресс:</h3>
-                                <p>{progress.toFixed(2) + '%'}</p>
+                                <p>{progressData.progress.toFixed(2)}%</p>
                             </div>
 
                             {/* Progress bar */}
                             <div className="task-progress-bar">
                                 <div className="progress-bar-background">
-                                    <div className="progress-bar-fill" style={{ width: `${progress}%` }}></div>
+                                    <div className="progress-bar-fill" style={{ width: `${progressData.progress}%` }}>
+                                    </div>
                                 </div>
                             </div>
                         </div>

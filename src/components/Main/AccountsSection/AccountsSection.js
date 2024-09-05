@@ -73,14 +73,20 @@ export default function AccountsSection() {
                 },
                 body: JSON.stringify(newAccount)
             });
-
+    
             if (response.ok) {
                 const createdAccount = await response.json();
                 setAccounts([...accounts, createdAccount]);
                 setIsModalOpen(false);
                 setNewAccount({ name: '', balance: '' });
             } else {
-                console.error('Error creating account');
+                if (response.status === 500) {
+                    console.error('Account with this name already exists');
+                    // Выводим сообщение об ошибке пользователю
+                    alert('Счет с таким именем уже существует');
+                } else {
+                    console.error('Error creating account');
+                }
             }
         } catch (error) {
             console.error('Error creating account:', error);
@@ -130,7 +136,7 @@ export default function AccountsSection() {
                             <img src={img} alt='Account Icon' />
                             <strong><p className='accountItem-name'>{account.name}</p></strong>
                         </div>
-                        <p>Баланс: {account.balance}</p>
+                        <p>Баланс: {account.balance} ₽</p>
                         <div className='accountsList-groupBut'>
                             <Button onClick={() => {
                                 setIsTransactionModalOpen(true);
@@ -143,10 +149,10 @@ export default function AccountsSection() {
             </div>
 
             <Modal isOpen={isTransactionModalOpen} onRequestClose={() => setIsTransactionModalOpen(false)}>
-                <FormAddTransaction 
-                    onTransactionAdded={handleTransactionAdded} 
-                    selectedAccount={selectedAccountForTransaction} 
-                    fetchAccounts={fetchAccounts} 
+                <FormAddTransaction
+                    onTransactionAdded={handleTransactionAdded}
+                    selectedAccount={selectedAccountForTransaction}
+                    fetchAccounts={fetchAccounts}
                 />
             </Modal>
         </div>

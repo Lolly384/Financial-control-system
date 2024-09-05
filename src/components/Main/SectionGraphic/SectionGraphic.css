@@ -6,14 +6,50 @@
     margin-top: 10px;
     border-radius: 15px;
     width: auto;
-    height: auto; /* Увеличил высоту, чтобы график был лучше виден */
+    height: auto;
+    /* Увеличил высоту, чтобы график был лучше виден */
     padding: 20px;
-    background-color: #fff;
+    background-color: #333;
 }
-.sectionGraphic h2{
+
+.sectionGraphic h2 {
     padding-top: 20px;
 }
-.victory-container  {
+
+.victory-container {
     width: 100%;
     height: 100%;
+
+}
+
+.VictoryContainer {
+    width: 1500px;
+    height: 400px;
+}
+
+
+@media (max-width: 768px) {
+
+    .sectionGraphic {
+        width: auto;
+        height: auto;
+        /* Увеличил высоту, чтобы график был лучше виден */
+        align-items: flex-start;
+        overflow: hidden;
+        overflow-x: auto;
+        
+    }
+
+    .sectionGraphic h2 {
+        padding-top: 20px;
+    }
+
+    .victory-container {
+        width: 1500px;
+        height: auto;
+        
+    }
+    
+
+
 }

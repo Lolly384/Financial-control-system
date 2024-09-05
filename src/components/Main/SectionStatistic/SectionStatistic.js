@@ -73,10 +73,10 @@ const SectionStatistic = () => {
         <section className='sectionStatistic'>
             <div className="statistics-section">
                 <h3>Статистика за месяц</h3>
-                <p>Макс. сумма потраченная за раз: <span>{statistics.maxSpent} $</span></p>
-                <p>Макс. сумма пополнения за раз: <span>{statistics.maxReplenished} $</span></p>
-                <p>Общая сумма потраченная: <span>{statistics.totalSpent} $</span></p>
-                <p>Общая сумма пополнений: <span>{statistics.totalReplenished} $</span></p>
+                <p>Макс. сумма потраченная за раз: <span>{statistics.maxSpent} ₽</span></p>
+                <p>Макс. сумма пополнения за раз: <span>{statistics.maxReplenished} ₽</span></p>
+                <p>Общая сумма потраченная: <span>{statistics.totalSpent} ₽</span></p>
+                <p>Общая сумма пополнений: <span>{statistics.totalReplenished} ₽</span></p>
             </div>
         </section>
     );

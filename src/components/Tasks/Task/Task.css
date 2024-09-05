@@ -6,20 +6,30 @@
     margin-top: 10px;
 }
 
+.task-progress p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .progress-bar-background {
     height: 20px;
     background-color: #f3f3f3;
     border-radius: 13px;
     overflow: hidden;
     position: relative;
+
 }
 
 .progress-bar-fill {
     height: 100%;
-    background-color: #76c7c0;
+    background-color: #00ffea;
     transition: width 0.5s ease-in-out;
+
 }
+
 .tasks-task.task-completed {
-    background-color: #d4edda; /* светло-зелёный цвет */
-    border-color: #c3e6cb;
+    /* background-color: #d4edda; светло-зелёный цвет */
+    border: 3px solid #76C7C0;
+    /* border-color: #c3e6cb; */
 }

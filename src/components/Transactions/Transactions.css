@@ -1,66 +1,69 @@
 .transactions {
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .transactions-table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .transactions-table th,
 .transactions-table td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
 }
 
 .transactions-table th {
-    background-color: #f2f2f2;
+  background-color: #333;
 }
 
 
 
 .transactions-button {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .pagination {
-    display: inline-block;
-    display: flex;
-    margin-top: 10px;
-    /* Примерный отступ сверху */
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-    /* Предотвращение выделения текста */
-  }
+  display: inline-block;
+  display: flex;
+  margin-top: 10px;
+  /* Примерный отступ сверху */
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  /* Предотвращение выделения текста */
+}
+
+.pagination li a {
+  display: block;
+  width: inherit;
+  height: inherit;
+  padding: 5px 10px;
+  background-color: #222;
   
-  .pagination li a {
-    display: block;
-      width: inherit;
-      height: inherit;
-      padding: 5px 10px;
-  }
-  .pagination li {
-    display: inline-block;
-    margin-right: 5px;
-    /* Примерный отступ между элементами */
-    border: 1px solid #ccc;
-    cursor: pointer;
-    background-color: #fff;
-  }
-  
-  .pagination li.active {
-    background-color: #007bff;
-    /* Цвет активной страницы */
-    color: #fff;
-  }
-  
-  .pagination li:hover {
-    background-color: #f0f0f0;
-    /* Цвет при наведении */
-  }
+}
+
+.pagination li {
+  display: inline-block;
+  margin-right: 5px;
+  /* Примерный отступ между элементами */
+  border: 1px solid #222;
+  cursor: pointer;
+  background-color: #fff;
+}
+
+.pagination li.active {
+  background-color: #007bff;
+  /* Цвет активной страницы */
+  color: #fff;
+}
+
+.pagination li:hover {
+  background-color: #f0f0f0;
+  /* Цвет при наведении */
+}

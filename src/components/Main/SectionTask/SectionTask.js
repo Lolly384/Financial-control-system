@@ -129,7 +129,7 @@ export default function SectionTask() {
                                 <h3 className='task-title'>{task.name}</h3>
                                 <p>Тип: {task.type}</p>
                                 <p>Описание: {task.description}</p>
-                                <p>Сумма: {task.amount}</p>
+                                <p>Сумма: {task.amount} ₽</p>
                                 <p>Дата создания: {trimDate(task.created_at)}</p>
                                 {/* <p>Прогресс: {task.progress.toFixed(2)}%</p> */}
                             </div>

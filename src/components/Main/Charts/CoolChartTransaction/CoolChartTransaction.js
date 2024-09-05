@@ -36,8 +36,8 @@ export default function CoolChartTransaction({ transactions }) {
 
     // Создаем данные для круговой диаграммы
     const chartData = [
-        { x: 'Потрачено', y: totalExpense },
-        { x: 'Пополнено', y: totalIncome }
+        { x: 'Потр.', y: totalExpense },
+        { x: 'Попол.', y: totalIncome }
     ];
 
     // Проверяем наличие данных транзакций
@@ -54,12 +54,12 @@ export default function CoolChartTransaction({ transactions }) {
                     width={600}
                     height={600}
                     padding={50}
-                    innerRadius={70}
+                    innerRadius={40}
                     data={chartData}
                     colorScale={["tomato", "green"]}
-                    labels={({ datum }) => `${datum.x}: ${datum.y.toFixed(2)} руб.`}
-                    labelRadius={100}
-                    style={{ labels: { fill: "black", fontSize: 25, fontWeight: "bold" } }}
+                    labels={({ datum }) => `${datum.x}: ${datum.y.toFixed(2)} ₽`}
+                    labelRadius={50}
+                    style={{ labels: { fill: "black", fontSize: 25, fontWeight: "bold", fill: 'white' } }}
                 />
             </svg>
         </div>

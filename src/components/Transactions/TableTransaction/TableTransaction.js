@@ -98,7 +98,6 @@ export default function TableTransaction({ tableDataChanged, setTableDataChanged
             <table className='transactions-table' border="1">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Тип операции</th>
                         <th>Сумма</th>
                         <th>Дата</th>
@@ -114,7 +113,6 @@ export default function TableTransaction({ tableDataChanged, setTableDataChanged
                 <tbody>
                     {currentRows.map((row, index) => (
                         <tr key={index}>
-                            <td>{index}</td>
                             <td>{row.type}</td>
                             <td>{row.sum}</td>
                             <td>{trimDate(row.date)}</td>

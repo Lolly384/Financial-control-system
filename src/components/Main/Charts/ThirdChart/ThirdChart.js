@@ -28,32 +28,35 @@ export default function ThirdChart({ transactions }) {
     return (
         <section className="sectionGraphicThird">
             <h2>Распределение расходов по категориям</h2>
-            <VictoryChart
-                theme={VictoryTheme.material}
-                domainPadding={20}
-                width={1500} // Ширина графика
-                height={400} // Высота графика
-                className="victory-container"
-            >
-                <VictoryAxis
-                    style={{ tickLabels: { angle: -25, fontSize: 10, padding: 15 } }} // Поворот меток оси X для лучшей читаемости
-                />
-                <VictoryAxis
-                    dependentAxis
-                    style={{ tickLabels: { fontSize: 8, angle: -45 } }}
-                    tickFormat={(x) => formatCurrency(x)}
-                />
-                <VictoryBar
-                    style={{
-                        data: { fill: "#c43a31" }
-                    }}
-                    data={chartData}
-                    x="x"
-                    y="y"
-                    labels={({ datum }) => formatCurrency(datum.y)}
-                    barWidth={20}
-                />
-            </VictoryChart>
+            <div className="victory-container">
+                <VictoryChart
+                    theme={VictoryTheme.material}
+                    domainPadding={20}
+                    width={1500} // Ширина графика
+                    height={400} // Высота графика
+                    className="victory-container"
+                >
+                    <VictoryAxis
+                        style={{ tickLabels: { angle: -25, fontSize: 10, padding: 15, fill: 'white' } }} // Поворот меток оси X для лучшей читаемости
+                    />
+                    <VictoryAxis
+                        dependentAxis
+                        style={{ tickLabels: { fontSize: 8, angle: -45, fill: 'white' } }}
+                        tickFormat={(x) => formatCurrency(x)}
+                    />
+                    <VictoryBar
+                        style={{
+                            data: { fill: "#c43a31" },
+                            labels: { fill: "white" }
+                        }}
+                        data={chartData}
+                        x="x"
+                        y="y"
+                        labels={({ datum }) => formatCurrency(datum.y)}
+                        barWidth={20}
+                    />
+                </VictoryChart>
+            </div>
         </section>
     );
 }

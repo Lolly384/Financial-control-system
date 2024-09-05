@@ -16,12 +16,15 @@
     align-items: center;
     gap: 20px;
     padding-top: 10px;
+
 }
 
 .menu-input input[type="date"] {
     padding: 8px;
-    border: 1px solid #ccc;
+    background-color: #333;
+    border: 1px solid #444;
     border-radius: 5px;
+    color: #fff;
     font-size: 16px;
 }
 
@@ -57,7 +60,7 @@ button:hover {
     width: auto;
     height: auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: #333;
 }
 
 .single-layout {
@@ -66,7 +69,8 @@ button:hover {
     gap: 10px;
 }
 
-.layout-buttons, .double-layout {
+.layout-buttons,
+.double-layout {
     margin-top: 10px;
     display: flex;
     flex-direction: row;
@@ -77,15 +81,34 @@ button:hover {
     width: 30px;
     height: 30px;
 }
-.pagination-controls{
+
+.pagination-controls {
     display: flex;
     flex-direction: row;
     justify-content: center;
     gap: 20px;
-    
+
 }
-.slider-layout{
+
+.slider-layout {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+@media (max-width: 768px) {
+
+    .menu {
+        flex-direction: column;
+    }
+
+    .menu-input{
+        flex-direction: column;
+    }
+    .layout-buttons{
+        justify-content: center;
+    }
+    .grop-graphics{
+        flex-direction: column;
+    }
 }

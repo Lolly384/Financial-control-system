@@ -17,7 +17,7 @@
 }
 
 .accountItem {
-    background-color: #FFFFFF;
+    background-color: #333;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -129,4 +129,17 @@
 .form-content{
     align-items: center;
     justify-content: center;
+}
+
+.App-main-contents{
+    width: 100%;
+}
+
+@media (max-width: 768px){
+    .accountItem{
+        width: 100%;
+    }
+    .App-main-contents{
+        width: auto;
+    }
 }

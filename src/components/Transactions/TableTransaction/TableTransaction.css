@@ -1,29 +1,23 @@
-.button-group {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-
-}
-
 .transactions-table th,
 .transactions-table td {
-
     text-align: left;
     border: none;
-    /* Убирает границы */
-}
-
-.transactions-table tbody tr {
-    border-bottom: 1px solid #dddddd;
+    padding: 8px; /* Увеличиваем отступы для лучшего отображения на мобильных устройствах */
 }
 
 .transactions-table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
-    font-size: 1rem;
+    font-size: 0.9rem; /* Уменьшаем размер шрифта для лучшего отображения на мобильных устройствах */
     font-family: 'Arial', sans-serif;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.button-group {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
 }
 
 .icon {
@@ -31,3 +25,16 @@
     height: 20px;
 }
 
+/* Скрыть столбцы на маленьких экранах */
+@media (max-width: 768px) {
+    .transactions-table th:nth-child(5),
+    .transactions-table td:nth-child(5),
+    .transactions-table th:nth-child(7),
+    .transactions-table td:nth-child(7),
+    .transactions-table th:nth-child(8),
+    .transactions-table td:nth-child(8),
+    .transactions-table th:nth-child(9),
+    .transactions-table td:nth-child(9) {
+        display: none;
+    }
+}

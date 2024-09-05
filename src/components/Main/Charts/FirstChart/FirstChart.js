@@ -22,32 +22,35 @@ export default function FirstChart({ transactions }) {
     return (
         <section className="sectionGraphicFirst">
             <h2>Распределение расходов по типам операций</h2>
-            <VictoryChart
-                theme={VictoryTheme.material}
-                domainPadding={20}
-                width={1500} // Ширина графика
-                height={400} // Высота графика
-                className="victory-container"
-            >
-                <VictoryAxis
-                    style={{ tickLabels: { angle: -25, fontSize: 10, padding: 15 } }} // Поворот меток оси X для лучшей читаемости
-                />
-                <VictoryAxis
-                    dependentAxis
-                    style={{ tickLabels: { angle: -45, fontSize: 10 } }} // Поворот меток оси X для лучшей читаемости
-                    tickFormat={(x) => `${x} руб.`}
-                />
-                <VictoryBar
-                    style={{
-                        data: { fill: "#c43a31" }
-                    }}
-                    data={chartData}
-                    x="x"
-                    y="y"
-                    labels={({ datum }) => `${datum.y.toFixed(2)} руб.`}
-                    barWidth={20}
-                />
-            </VictoryChart>
+            <div className="victory-container">
+                <VictoryChart
+                    theme={VictoryTheme.material}
+                    domainPadding={20}
+                    width={1500} // Ширина графика
+                    height={400} // Высота графика
+                    className="victory-container"
+                >
+                    <VictoryAxis
+                        style={{ tickLabels: { angle: -25, fontSize: 10, padding: 15, fill: 'white' } }} // Поворот меток оси X для лучшей читаемости
+                    />
+                    <VictoryAxis
+                        dependentAxis
+                        style={{ tickLabels: { angle: -45, fontSize: 10, fill: "white" }, axisLabel: { fill: "white" } }}
+                        tickFormat={(x) => `${x} ₽`}
+                    />
+                    <VictoryBar
+                        style={{
+                            data: { fill: "#c43a31" },
+                            labels: { fill: "white" }
+                        }}
+                        data={chartData}
+                        x="x"
+                        y="y"
+                        labels={({ datum }) => `${datum.y.toFixed(2)} руб.`}
+                        barWidth={20}
+                    />
+                </VictoryChart>
+            </div>
         </section>
     );
 }

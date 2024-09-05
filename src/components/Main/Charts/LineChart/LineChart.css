@@ -8,5 +8,20 @@
     width: auto;
     height: auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: #333;
+}
+
+@media (max-width: 768px) {
+
+    .sectionGraphicLine{
+        width: auto;
+        height: auto;
+        /* Увеличил высоту, чтобы график был лучше виден */
+        align-items: flex-start;
+        overflow: hidden;
+        overflow-x: auto;
+    }
+    .sectionGraphicLine h2{
+        padding-top: 20px;
+    }
 }
